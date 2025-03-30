@@ -81,25 +81,23 @@ def load_state(project_name: str) -> bool:
 def save_state_to_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
-    # Vérifie si le projet existe déjà
     result = (
-        conn.query("*", table="projects_state")
-        .filter("project_name", "eq", project_name)
+        conn.client.table("projects_state")
+        .select("*")
+        .eq("project_name", project_name)
         .execute()
     )
 
     if result.data:
-        # Update si déjà existant
-        conn.table("projects_state").update(
+        conn.client.table("projects_state").update(
             {"state": json.dumps(dict(st.session_state))}
         ).eq("project_name", project_name).execute()
-        st.success(f"Projet **{project_name}** mis à jour avec succès !")
+        st.toast(f"Projet **{project_name}** mis à jour !")
     else:
-        # Sinon on insère
-        conn.table("projects_state").insert(
+        conn.client.table("projects_state").insert(
             {"project_name": project_name, "state": json.dumps(dict(st.session_state))}
         ).execute()
-        st.success(f"Projet **{project_name}** sauvegardé avec succès !")
+        st.toast(f"Projet **{project_name}** sauvegardé !")
 
 
 def load_state_from_supabase(project_name):
