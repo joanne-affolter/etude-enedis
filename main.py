@@ -4,9 +4,6 @@ import pandas as pd
 st.set_page_config(layout="wide", page_title="Étude ENEDIS")
 
 import datetime
-from xhtml2pdf.default import DEFAULT_FONT
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from helpers import (
     html_to_pdf,
     insert_image_to_fields,
@@ -34,10 +31,6 @@ from helpers import (
 )
 import pickle
 import os
-
-# Register the font
-pdfmetrics.registerFont(TTFont("Poppins", "Streamlit_app/Poppins/Poppins-Regular.ttf"))
-DEFAULT_FONT["face"] = "Poppins"
 
 
 def save_state(project_name: str) -> bool:
