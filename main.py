@@ -124,20 +124,24 @@ def load_state_from_supabase(project_name):
     )
 
     if result.data:
-        encoded = result.data[0]["state"]
-        pickled = base64.b64decode(encoded)
-        loaded_state = pickle.loads(pickled)
+        try:
+            encoded = result.data[0]["state"]
+            pickled = base64.b64decode(encoded)
+            loaded_state = pickle.loads(pickled)
 
-        for key, value in loaded_state.items():
-            if key not in st.session_state:
+            # ⚠️ Important : Écraser les valeurs même si elles existent déjà
+            for key, value in loaded_state.items():
                 st.session_state[key] = value
 
-        print(loaded_state)
-        st.toast(f"Projet **{project_name}** chargé avec succès !")
-        st.rerun()
-        return True
+            st.toast(f"Projet **{project_name}** chargé avec succès ✅")
+            st.experimental_rerun()  # pour que les widgets prennent les nouvelles valeurs
+
+            return True
+        except Exception as e:
+            st.error(f"Erreur lors du chargement : {e}")
+            return False
     else:
-        st.warning("Projet non trouvé.")
+        st.warning("❌ Projet non trouvé.")
         return False
 
 
