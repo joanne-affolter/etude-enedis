@@ -930,9 +930,7 @@ def render_image_section(name_bigsection: str, key: str):
 def generation_pdf():
     # st.header("Génération du PDF")
     if True:
-        with open(
-            "Streamlit_app/template_interieur_exterieur.html", "r", encoding="utf-8"
-        ) as f:
+        with open("template_interieur_exterieur.html", "r", encoding="utf-8") as f:
             template_html = f.read()
 
         date_str = st.session_state.date_saisie.strftime("%d/%m/%Y")
