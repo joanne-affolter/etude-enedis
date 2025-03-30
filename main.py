@@ -47,7 +47,7 @@ def save_state(project_name: str) -> bool:
     return True
 
 
-def list_saved_states():
+def list_saved_states_old():
     path = "Streamlit_app/saved_states"
     if not os.path.exists(path):
         os.makedirs(path)
@@ -55,6 +55,14 @@ def list_saved_states():
 
     files = [f.replace(".pkl", "") for f in os.listdir(path) if f.endswith(".pkl")]
     return files
+
+
+def list_saved_states():
+    conn = st.connection("supabase", type=SupabaseConnection)
+    result = conn.client.table("projects_state").select("project_name").execute()
+    if result.data:
+        return [row["project_name"] for row in result.data]
+    return []
 
 
 def load_state(project_name: str) -> bool:
