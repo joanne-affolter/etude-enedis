@@ -129,12 +129,14 @@ def load_state_from_supabase(project_name):
             pickled = base64.b64decode(encoded)
             loaded_state = pickle.loads(pickled)
 
+            print(loaded_state)
+
             # ⚠️ Important : Écraser les valeurs même si elles existent déjà
             for key, value in loaded_state.items():
                 st.session_state[key] = value
 
             st.toast(f"Projet **{project_name}** chargé avec succès ✅")
-            st.experimental_rerun()  # pour que les widgets prennent les nouvelles valeurs
+            st.rerun()  # pour que les widgets prennent les nouvelles valeurs
 
             return True
         except Exception as e:
