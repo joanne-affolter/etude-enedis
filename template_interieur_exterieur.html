@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Étude REA - Version HTML</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: "Poppins", sans-serif;
+      color: #000;
+    }
+    .sommaire {
+      font-size: 12px; 
+      
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    p {
+      font-size: 11px; 
+      line-height: 1.5;
+      padding: 0 0 5px 0;
+    }
+
+    h1 {
+      font-size: 1.6em;
+      color: #995b9f;
+      margin: 0px 0 20px 0;
+      text-transform: uppercase;
+      border-bottom: 2px solid #995b9f;
+      padding-bottom: 5px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      color: #995b9f;
+      margin: 0px 0 10px 0;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 1.2em;
+      color: #995b9f;
+      margin: 0px 0 0 0;
+      padding-bottom: 10px;
+      margin-bottom: 0px;
+      text-transform: uppercase;
+    }
+    h4 {
+      font-size: 1.1em;
+      color: #995b9f;
+      text-transform: uppercase;
+      border-bottom: 1px solid #995b9f;
+      padding-bottom: 10px;
+      margin-bottom: 0px;
+      text-align: center;
+    }
+
+    /* Table principale */
+    .tg {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      margin-bottom: 20px;
+    }
+    .tg td,
+
+
+    .tg th {
+      border: 0.5px solid #995b9f;
+      vertical-align: top;
+      word-break: normal;
+      font-family: Arial, sans-serif;
+      /* Moins de padding haut/bas pour resserrer les lignes : */
+      padding: 4px 2px; 
+    }
+    /* Entête avec plus grande police */
+    .tg th {
+      background-color: #995b9f;
+      color: #fff;
+      font-weight: bold;
+      font-size: 10px; 
+      text-align: center;
+    }
+    /* Pour la cellule fusionnée de titre éventuel */
+    .tg .th-title {
+      background-color: #995b9f;
+      color: #fff;
+      font-weight: bold;
+      font-size: 10px; 
+      text-align: center;
+      padding-top: 5px;
+    }
+    .tg .tg-merge {
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- =================== PAGE 1 =================== -->
+  <h1>Étude REA - {ADRESSE_SITE} - Numéro d’affaire ENEDIS {NUMERO_AFFAIRE}</h1>
+
+  <!-- Identification -->
+  <div class="tableau">
+    <table class="tg">
+      <thead>
+        <tr>
+          <th class="th-title" colspan="3">Identification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-merge" style="width: 30%;">
+            <strong>Version:</strong> V1</td>
+          <td class="tg-merge" style="width: 40%; text-align:center;">PROJET AVEC PRÉFINANCEMENT</td>
+          <td class="tg-merge" style="width: 30%;">
+            <strong>Date:</strong> {DATE}</td>
+        </tr>
+        <tr>
+          <td class="tg-merge"><strong>Adresse</strong></td>
+          <td class="tg-merge" colspan="2">{ADRESSE_SITE}</td>
+        </tr>
+        <tr>
+          <td class="tg-merge"><strong>Numéro d'affaire</strong></td>
+          <td class="tg-merge" colspan="2">{NUMERO_AFFAIRE}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Maitre d'ouvrage -->
+  <div class="tableau">
+    <table class="tg">
+      <thead>
+        <tr>
+          <th class="th-title" colspan="2">Maître d'ouvrage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-merge" colspan="2">
+            <strong>ENEDIS - {REFERENCE_POLE_ENEDIS}</strong>
+          <br>
+          {ADRESSE_POLE_ENEDIS}
+          </td>
+        </tr>
+        <tr>
+          <td class="tg-merge" style="width: 30%;"></td>
+          <td class="tg-merge" style="width: 70%;">
+            <strong>Chargé de Projet: </strong>{NOM_CHARGE_PROJET} <br>
+            <strong>Tél: </strong>{TEL_CHARGE_PROJET} <br>
+            <strong>Email: </strong>{EMAIL_CHARGE_PROJET}
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Prestataire -->
+  <div class="tableau">
+    <table class="tg">
+      <thead>
+        <tr>
+          <th class="th-title" colspan="2">Prestataire</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-merge" colspan="2">
+          <strong>REVE solution</strong>
+          <br>
+          33 rue Voltaire, 92150 Suresnes
+          </td>
+        </tr>
+        <tr>
+          <td class="tg-merge" style="width: 30%;"></td>
+          <td class="tg-merge" style="width: 70%;">
+            <strong>Interlocuteur: </strong> {NOM_PRESTATAIRE}<br/>
+            <strong>Tél: </strong> {TEL_PRESTATAIRE} <br/>
+            <strong>Email: </strong> {EMAIL_PRESTATAIRE}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Syndic / BAILLEUR -->
+  <div class="tableau">
+    <table class="tg">
+      <thead>
+        <tr>
+          <th class="th-title" colspan="2">Syndic / Bailleur </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-merge" colspan="2">
+            <strong>{NOM_SYNDIC}</strong>
+          <br>
+          {ADRESSE_SYNDIC}
+          </td>
+        </tr>
+        <tr>
+          <td class="tg-merge" style="width: 30%;"></td>
+          <td class="tg-merge" style="width: 70%;">
+            <strong>Interlocuteur: </strong>{NOM_INTERLOCUTEUR_SYNDIC} <br>
+            <strong>Tél: </strong>{TEL_SYNDIC} <br>
+            <strong>Email: </strong>{EMAIL_SYNDIC}
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Signatures et cachets -->
+  <div class="tableau">
+    <table class="tg">
+      <thead>
+        <tr>
+          <th class="th-title" colspan="3">Signatures et cachets </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-merge">
+            <strong>ENEDIS Validation théorique</strong><br>
+            Précédé de la mention “lu et approuvé”
+            <br><br><br><br><br><br><br>
+          </td>
+          <td class="tg-merge">
+            <strong>Syndicat des copropriétaires</strong>
+            <br><br><br><br><br><br><br>
+          </td>
+          <td class="tg-merge" rowspan="2">
+            <strong>Bureau d'études</strong><br>
+            Précédé de la mention “lu et approuvé”
+            <br><br><br><br><br><br><br>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="tg-merge">
+            <strong>ENEDIS Validation pratique</strong><br>
+            Précédé de la mention “lu et approuvé”
+            <br><br><br><br><br><br><br>
+          </td>
+          <td class="tg-merge">
+            <strong>Syndicat des copropriétaires</strong>
+            <br><br><br><br><br><br><br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 2 =================== -->
+  <h1>SOMMAIRE</h1>
+  <div class="sommaire">
+    <p><strong>Contexte du projet</strong><br>
+    A) Déroulement du chantier<br>
+    B) Interlocuteur du chantier<br>
+    <br><strong>État Initial</strong><br>
+    A) Plan réseau<br>
+    B) Accessibilité<br>
+    C) État avant travaux<br>
+    <br><strong>Présentation du projet</strong><br>
+    A) Description de la solution technique<br>
+    B) Préfinancement<br>
+    <br><strong>État après travaux</strong><br>
+    A) Paramètres généraux<br>
+    B) Arrivée réseau et pied de colonne<br>
+    C) Distribution du parking<br>
+    D) Plans après travaux<br>
+    E) Synoptique<br>
+    F) Calcul de colonne électrique<br>
+    <br><strong>Liste du matériel référencé ENEDIS {parking_intérieur}</strong><br>
+    <br><strong>Liste du matériel référencé ENEDIS {parking_extérieur}</strong><br>
+    <br><strong>Lexique</strong></p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 4 =================== -->
+  <h1>1. Contexte du projet</h1>
+  <p>
+    <table class="tg">
+      <tbody>
+        <tr>
+          <td class="tg-merge" style="width:30%;">
+            <strong>Demande de Réseau Électrique Auto</strong>
+            <br>
+          </td>
+          <td class="tg-merge" style="width:70%;">
+            {NOMBRE_PLACES_STATIONNEMENT}
+          </td>
+        </tr>
+        <tr>
+          <td class="tg-merge" style="width:30%;">
+            <strong>Puissance IRVE</strong>
+            <br>
+          </td>
+          <td class="tg-merge" style="width:70%;">
+            {PUISSANCE_IRVE}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="tg-merge" style="width:30%;">
+            <strong>Année de construction de l’immeuble</strong>
+          </td> 
+          <td class="tg-merge" style="width:70%;">
+            {ANNEE_CONSTRUCTION_IMMEUBLE}
+          </td>
+        </tr>
+        <tr>
+          <td class="tg-merge" style="width:30%;">
+            <strong>Type de chauffage</strong>
+          </td>
+          <td class="tg-merge" style="width:70%;">
+            {TYPE_CHAUFFAGE}
+          </td>
+        </tr>
+        <tr>
+          <td class="tg-merge" style="width:30%;">
+            <strong>Préfinancement</strong>
+            <br>
+            (cf. “EXPOSÉ DU PROBLÈME” e-Plans)
+          </td>
+          <td class="tg-merge" style="width:70%;">
+            {AVEC_SANS_PREFINANCEMENT}
+          </td>
+        </tr>
+       
+      </tbody>
+    </table>
+  <p></p>
+
+  <h3>A) Déroulement du chantier</h3>
+
+  <table class="tg">
+    <tbody>
+      <tr>
+        <td class="tg-merge" style="width:30%;">
+          <strong>Date visite technique</strong>
+        </td>
+        <td class="tg-merge" style="width:70%;">
+          {DATE_VISITE_TECHNIQUE}
+        </td>
+      </tr>
+      <tr>
+        <td class="tg-merge" style="width:30%;">
+          <strong>Date de l’AG</strong>
+        </td> 
+        <td class="tg-merge" style="width:70%;">
+          {DATE_AG}
+        </td>
+      </tr>
+      <tr>
+        <td class="tg-merge" style="width:30%;">
+          <strong>Début de chantier</strong>
+        </td>
+        <td class="tg-merge" style="width:70%;">
+          {DATE_DEBUT_CHANTIER}
+        </td>
+      </tr>
+      <tr>
+        <td class="tg-merge" style="width:30%;">
+          <strong>Fin de chantier</strong>
+        </td>
+      
+        <td class="tg-merge" style="width:70%;">
+          {DATE_FIN_CHANTIER}
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>B) Interlocuteur du chantier</h3>
+
+  <table class="tg">
+    <tbody>
+      <tr>
+        <td class="tg-merge" style="width:30%;">
+          <strong>Chef de chantier</strong>
+        </td>
+        <td class="tg-merge" style="width:70%;">
+          {NOM_PRESTATAIRE}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 5 =================== -->
+  <h1>2. État Initial</h1>
+
+  <h3>A) Plan réseau</h3>
+  <div>
+    {IMG_PLAN_RESEAU}
+  </div>
+
+  <div class="page-break"></div>
+
+  <h3>B) Accessibilité</h3>
+  <h4>Accès Copropriété</h4>
+  <p>
+    <strong>Moyen d'acccès: </strong> {MOYEN_DACCES_COPRO}
+  </p>
+  <div>
+    {IMG_FACADE_ACCES_COPRO}
+  </div>
+
+  <h4>Accès Parking</h4>
+  <p>
+    <strong>Moyen d'acccès: </strong> {MOYEN_DACCES_COPRO}
+  </p>
+  <div>
+    {IMG_FACADE_ACCES_PARKING}
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 6 =================== -->
+  <h3>C) État avant travaux</h3>
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+    {IMAGE_AVANT_TRAVAUX}
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 7 =================== -->
+  <h1>3. Présentation du projet</h1>
+  <p style="font-size: 12px;">Création d’une colonne électrique et de raccordements individuels IRVE.</p>
+
+  <h3>A) Description de la solution technique</h3>
+
+  {DESCRIPTION_TECHNIQUE}
+  <div>
+  {EXCEL_FILE}
+  </div>
+
+
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 8 =================== -->
+  <h3>B) Préfinancement</h3>
+
+  <h4>Travaux annexes nécessaires au raccordement de l'Infrastructure Collective</h4>
+  <div class="tableau">
+    {PREFINANCEMENT_ENEDIS}
+  </div>
+
+
+
+  <h4>Travaux complémentaires sous la maîtrise d'ouvrage du Demandeur et à réaliser par ses soins, 
+    nécessaires au raccordement de l'Infrastructure Collective</h4>
+
+    <div class="tableau">
+      {PREFINANCEMENT_DEMANDEUR}
+    </div>
+  
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 9 =================== -->
+
+  <h1>État après travaux</h1>
+  
+  <h3>A) Plan Réseau</h3>
+  <div>
+    {PLAN_RESEAU_2}
+  </div>
+
+  <h3>B) Paramètres généraux</h3>
+  <div>
+    {IMG_PARAMETRES_GENERAUX}
+  </div>
+
+  <h3>C) Arrivée réseau et pied de colonne</h3>
+  <div>
+    {IMG_ARRIVEE_RESEAU}
+  </div>
+
+  <h3>D) Distribution du parking</h3>
+  <div>
+    {IMG_DISTRIBUTION_PARKING}
+  </div>
+
+  <h3>E) Plans après travaux</h3>
+  <div>
+    {IMG_PLAN_APRES_TRAVAUX}
+  </div>
+
+  <h3>F) Synoptique</h3>
+  <div>
+    {IMG_SYNOPTIQUE}
+  </div>
+
+  <h3>F) Calcul de colonne électrique</h3>
+  <div>
+    {IMG_CALCUL_COLONNE_ELECTRIQUE}
+  </div>
+  
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 10 =================== -->
+  <h1>Liste du matériel référencé ENEDIS - Parking Intérieur</h1>
+  {MATERIEL_PARKING_INTERIEUR}
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 11  =================== -->
+  <h1>Liste du matériel référencé ENEDIS - Parking Extérieur</h1>
+  {MATERIEL_PARKING_EXTERIEUR}
+  <div class="page-break"></div>
+
+  <!-- =================== PAGE 12 =================== -->
+  <h1>Lexique</h1>
+
+  <div class="tableau">
+    <table class="tg" style="width: 100%; border-collapse: collapse;">
+      <tbody>
+        <tr>
+          <td style="width: 20%; background: #fff; color:#995b9f; font-weight: bold;">
+            CCPC
+          </td>
+          <td style="width: 80%; background: #fff;">
+            Coupe Circuit Principal Collectif : permet de couper et de protéger la colonne électrique depuis l’extérieur du bâtiment
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">ECP3D</td>
+          <td style="background: #fff;">
+            Un CCPC permettant d’alimenter, de couper et de protéger depuis l’extérieur d’un bâtiment deux colonnes électriques séparément.
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">ECP2D /C400P200</td>
+          <td style="background: #fff;">
+            Un CCPC permettant couper et de protéger la colonne électrique depuis l’extérieur d’un bâtiment
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">CCPI</td>
+          <td style="background: #fff;">
+            Coupe Circuit Principal Individuel : permet de couper et de protéger un raccordement individuel depuis les parties communes.
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Pied de colonne</td>
+          <td style="background: #fff;">
+            Coffret permettant de couper et de protéger une colonne simple ou multiple à l’intérieur du bâtiment (souvent situé au RDC ou au sous-sol)
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Grille</td>
+          <td style="background: #fff;">
+            Permet de relier plusieurs dérivations individuelle ou collectives
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">La canalisation horizontale</td>
+          <td style="background: #fff;">
+            Câble spécial IRVE horizontal isolé torsadé fixé au plafond par colliers dans le parking intérieur.
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Dérivation Individuelle (DI)</td>
+          <td style="background: #fff;">
+            Liaison entre la colonne horizontale et le panneau de comptage, 2X25 ou 4X25
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Triphasé</td>
+          <td style="background: #fff;">
+            Raccordement d’une puissance allant de 6 KVA à 36 KVA constitué de trois phases et d’un neutre.
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Monophasé</td>
+          <td style="background: #fff;">
+            Raccordement d’une puissance allant 3KVA à 12 KVA constitué d’une phase et d’un neutre.
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Synoptique</td>
+          <td style="background: #fff;">
+            Schéma qui décrit les matériels présents dans la colonne horizontale et les raccordements depuis le réseau de distribution
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">SPCM</td>
+          <td style="background: #fff;">
+            Matériels de protection et de coupure posés en tête d’une travée. Obligatoire à partir de deux travées.
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Armoire de comptage</td>
+          <td style="background: #fff;">
+            Armoire fournie et posée par le client, permettant d’accueillir le panneau de comptage avec le compteur Linky
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">Armoire matériels</td>
+          <td style="background: #fff;">
+            Armoire fournie et posée par le client, permettant d’accueillir les matériels de protections (SPCM)
+          </td>
+        </tr>
+        <tr>
+          <td style="background: #fff; color:#995b9f; font-weight: bold;">IRVE</td>
+          <td style="background: #fff;">
+            Infrastructure Réseau Véhicule Électrique
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="colored">
+    <p><strong>Nota :</strong> Ce dossier technique sera envoyé au syndic pour validation.</p>
+  </div>
+
+</div>
+</body>
+</html>
