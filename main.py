@@ -95,7 +95,10 @@ def save_state_to_supabase(project_name):
         st.toast(f"Projet **{project_name}** mis à jour !")
     else:
         conn.client.table("projects_state").insert(
-            {"project_name": project_name, "state": json.dumps(dict(st.session_state))}
+            {
+                "project_name": project_name,
+                "state": json.dumps(dict(str(st.session_state))),
+            }
         ).execute()
         st.toast(f"Projet **{project_name}** sauvegardé !")
 
