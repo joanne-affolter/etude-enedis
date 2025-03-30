@@ -90,7 +90,7 @@ def save_state_to_supabase(project_name):
 
     if result.data:
         conn.client.table("projects_state").update(
-            {"state": json.dumps(dict(st.session_state))}
+            {"state": json.dumps(dict(str(st.session_state)))}
         ).eq("project_name", project_name).execute()
         st.toast(f"Projet **{project_name}** mis à jour !")
     else:
