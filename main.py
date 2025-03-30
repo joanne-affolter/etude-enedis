@@ -132,7 +132,9 @@ def load_state_from_supabase(project_name):
             if key not in st.session_state:
                 st.session_state[key] = value
 
+        print(loaded_state)
         st.toast(f"Projet **{project_name}** chargé avec succès !")
+        st.rerun()
         return True
     else:
         st.warning("Projet non trouvé.")
