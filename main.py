@@ -1,5 +1,8 @@
 import streamlit as st
-import pandas as pd
+from st_supabase_connection import SupabaseConnection
+import pickle
+import os
+import json
 
 st.set_page_config(layout="wide", page_title="Étude ENEDIS")
 
@@ -29,8 +32,6 @@ from helpers import (
     MATERIEL_DI_PARKING_SOL,
     EXTENSION_RESEAU,
 )
-import pickle
-import os
 
 
 def save_state(project_name: str) -> bool:
@@ -77,7 +78,49 @@ def load_state(project_name: str) -> bool:
     return True
 
 
-# Initialisation de session_state
+def save_state_to_supabase(project_name):
+    conn = st.connection("supabase", type=SupabaseConnection)
+
+    # Vérifie si le projet existe déjà
+    result = (
+        conn.query("*", table="projects_state")
+        .filter("project_name", "eq", project_name)
+        .execute()
+    )
+
+    if result.data:
+        # Update si déjà existant
+        conn.table("projects_state").update(
+            {"state": json.dumps(dict(st.session_state))}
+        ).eq("project_name", project_name).execute()
+        st.success(f"Projet **{project_name}** mis à jour avec succès !")
+    else:
+        # Sinon on insère
+        conn.table("projects_state").insert(
+            {"project_name": project_name, "state": json.dumps(dict(st.session_state))}
+        ).execute()
+        st.success(f"Projet **{project_name}** sauvegardé avec succès !")
+
+
+def load_state_from_supabase(project_name):
+    conn = st.connection("supabase", type=SupabaseConnection)
+
+    result = (
+        conn.query("*", table="projects_state")
+        .filter("project_name", "eq", project_name)
+        .execute()
+    )
+
+    if result.data:
+        saved_state = json.loads(result.data[0]["state"])
+        for key, value in saved_state.items():
+            if key not in st.session_state:
+                st.session_state[key] = value
+        st.experimental_rerun()  # recharge avec les valeurs remplies
+    else:
+        st.warning(f"Aucun projet nommé **{project_name}** trouvé.")
+
+
 def init_state():
     defaults = {
         # Infos Générales
@@ -1147,7 +1190,8 @@ def main():
     if saved_projects:
         selected_project = st.sidebar.selectbox("États disponibles :", saved_projects)
         if st.sidebar.button("Charger"):
-            load_state(selected_project)
+            # load_state(selected_project)
+            load_state_from_supabase(selected_project)
     else:
         st.sidebar.write("Aucun état sauvegardé pour le moment.")
 
@@ -1157,7 +1201,8 @@ def main():
     )
 
     if st.sidebar.button("Sauvegarder"):
-        success = save_state(project_name)
+        # success = save_state(project_name)
+        success = save_state_to_supabase(project_name)
         if success:
             st.sidebar.success(f"Projet **{project_name}** sauvegardé avec succès ✅")
 

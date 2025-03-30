@@ -3,3 +3,5 @@ pandas
 openpyxl
 xhtml2pdf
 reportlab
+psycopg2
+st-supabase-connection
