@@ -3,6 +3,7 @@ from st_supabase_connection import SupabaseConnection
 import pickle
 import os
 import json
+import base64
 
 st.set_page_config(layout="wide", page_title="Étude ENEDIS")
 
@@ -81,6 +82,10 @@ def load_state(project_name: str) -> bool:
 def save_state_to_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
+    pickled_state = pickle.dumps(dict(st.session_state))
+    encoded = base64.b64encode(pickled_state).decode("utf-8")
+
+    # Sauvegarde ou mise à jour
     result = (
         conn.client.table("projects_state")
         .select("*")
@@ -89,37 +94,41 @@ def save_state_to_supabase(project_name):
     )
 
     if result.data:
-        conn.client.table("projects_state").update(
-            {"state": json.dumps(dict(str(st.session_state)))}
-        ).eq("project_name", project_name).execute()
-        st.toast(f"Projet **{project_name}** mis à jour !")
+        conn.client.table("projects_state").update({"state": encoded}).eq(
+            "project_name", project_name
+        ).execute()
     else:
         conn.client.table("projects_state").insert(
-            {
-                "project_name": project_name,
-                "state": json.dumps(dict(str(st.session_state))),
-            }
+            {"project_name": project_name, "state": encoded}
         ).execute()
-        st.toast(f"Projet **{project_name}** sauvegardé !")
+
+    st.toast(f"Projet **{project_name}** sauvegardé (pickled)")
 
 
 def load_state_from_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     result = (
-        conn.query("*", table="projects_state")
-        .filter("project_name", "eq", project_name)
+        conn.client.table("projects_state")
+        .select("state")
+        .eq("project_name", project_name)
         .execute()
     )
 
     if result.data:
-        saved_state = json.loads(result.data[0]["state"])
-        for key, value in saved_state.items():
+        encoded = result.data[0]["state"]
+        pickled = base64.b64decode(encoded)
+        loaded_state = pickle.loads(pickled)
+
+        for key, value in loaded_state.items():
             if key not in st.session_state:
                 st.session_state[key] = value
-        st.experimental_rerun()  # recharge avec les valeurs remplies
+
+        st.toast(f"Projet **{project_name}** chargé avec succès !")
+        return True
     else:
-        st.warning(f"Aucun projet nommé **{project_name}** trouvé.")
+        st.warning("Projet non trouvé.")
+        return False
 
 
 def init_state():
