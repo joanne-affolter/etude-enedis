@@ -795,9 +795,9 @@ def insert_image_to_fields(file_or_files, placeholder, alt_text, fields):
         image_base64 = base64.b64encode(file.read()).decode("utf-8")
         mime_type = file.type
         images_html += (
-            f'<div style="margin-bottom: 10px;">'
+            f'<div style="width:100%; margin-bottom: 10px;">'
             f'<img src="data:{mime_type};base64,{image_base64}" '
-            f'width="70%" alt="{alt_text}" style="display: block; width:70%; max-width: 70%;" />'
+            f'alt="{alt_text}" style="display: block; width:70%; max-width: 70%;" />'
             f"</div>"
         )
 
@@ -820,9 +820,9 @@ def insert_images_to_fields(etats_dict, placeholder, alt_text, fields):
                 image_base64 = base64.b64encode(file.read()).decode("utf-8")
                 mime_type = file.type
                 html_output += f'''
-                    <div style="margin-bottom: 10px;">
+                    <div style="width:100%; margin-bottom: 10px;">
                         <img src="data:{mime_type};base64,{image_base64}" 
-                             width="70%" alt="{alt_text}" 
+                             alt="{alt_text}" 
                              style="display: block; width:70%; max-width: 70%;" />
                     </div>
                 '''
@@ -845,9 +845,9 @@ def insert_images_to_fields_titles(etats_dict, placeholder, alt_text, fields):
                 image_base64 = base64.b64encode(file.read()).decode("utf-8")
                 mime_type = file.type
                 html_output += f'''
-                    <div style="margin-bottom: 10px;">
+                    <div style="width:100%; margin-bottom: 10px;">
                         <img src="data:{mime_type};base64,{image_base64}" 
-                             width="70%" alt="{alt_text}" 
+                             alt="{alt_text}" 
                              style="display: block; width:70%; max-width: 70%;" />
                     </div>
                 '''
