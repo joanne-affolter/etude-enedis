@@ -797,7 +797,7 @@ def insert_image_to_fields(file_or_files, placeholder, alt_text, fields):
         images_html += (
             f'<div style="margin-bottom: 10px;">'
             f'<img src="data:{mime_type};base64,{image_base64}" '
-            f'width="100%" alt="{alt_text}" style="display: block; max-width: 100%;" />'
+            f'width="100%" alt="{alt_text}" style="display: block; width:100%; max-width: 100%;" />'
             f"</div>"
         )
 
@@ -823,7 +823,7 @@ def insert_images_to_fields(etats_dict, placeholder, alt_text, fields):
                     <div style="margin-bottom: 10px;">
                         <img src="data:{mime_type};base64,{image_base64}" 
                              width="100%" alt="{alt_text}" 
-                             style="display: block; max-width: 100%;" />
+                             style="display: block; width:100%; max-width: 100%;" />
                     </div>
                 '''
     fields[placeholder] = html_output
@@ -848,7 +848,7 @@ def insert_images_to_fields_titles(etats_dict, placeholder, alt_text, fields):
                     <div style="margin-bottom: 10px;">
                         <img src="data:{mime_type};base64,{image_base64}" 
                              width="100%" alt="{alt_text}" 
-                             style="display: block; max-width: 100%;" />
+                             style="display: block; width:100%; max-width: 100%;" />
                     </div>
                 '''
     fields[placeholder] = html_output
