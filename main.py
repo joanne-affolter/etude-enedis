@@ -910,6 +910,11 @@ def render_image_section(name_bigsection: str, key: str):
     # Affichage des sous-sections et upload photo
     for sub in st.session_state.sections_dict[name_bigsection]:
         with st.expander(sub, expanded=False):
+            if st.button(f"❌", key=f"delete_{name_bigsection}_{sub}"):
+                # st.session_state.sections_dict[name_bigsection].remove(sub)
+                if key in st.session_state and sub in st.session_state[key]:
+                    st.session_state[key] = []
+
             uploaded_files = st.file_uploader(
                 label="",
                 type=["jpg", "jpeg", "png"],
@@ -925,12 +930,6 @@ def render_image_section(name_bigsection: str, key: str):
             if key in st.session_state and sub in st.session_state[key]:
                 for img in st.session_state[key][sub]:
                     st.image(img, caption=img.name, width=200)
-                    if st.button(
-                        "❌", key=f"remove_{name_bigsection}_{sub}_{img.name}"
-                    ):
-                        # Remove the image from the session state
-                        st.session_state[key][sub].remove(img)
-                        st.rerun()
 
 
 def generation_pdf():
