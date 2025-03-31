@@ -925,6 +925,12 @@ def render_image_section(name_bigsection: str, key: str):
             if key in st.session_state and sub in st.session_state[key]:
                 for img in st.session_state[key][sub]:
                     st.image(img, caption=img.name, width=200)
+                    if st.button(
+                        "❌", key=f"remove_{name_bigsection}_{sub}_{img.name}"
+                    ):
+                        # Remove the image from the session state
+                        st.session_state[key][sub].remove(img)
+                        st.rerun()
 
 
 def generation_pdf():
