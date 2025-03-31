@@ -352,6 +352,10 @@ def section_technique():
         st.session_state["plan_reseau"] = plan_reseau_upload
 
     if len(st.session_state.plan_reseau) > 0:
+        if st.button(f"Supprimer les photos", key=f"delete_plan_reseau"):
+            st.session_state.plan_reseau = []
+
+    if len(st.session_state.plan_reseau) > 0:
         for img in st.session_state["plan_reseau"]:
             st.image(img, width=200)
             st.write("")
@@ -462,6 +466,10 @@ def section_acces():
         st.session_state["facade_acces_copro"] = copro_upload
 
     if len(st.session_state.facade_acces_copro) > 0:
+        if st.button(f"Supprimer les photos", key=f"delete_facade_acces_copro"):
+            st.session_state.facade_acces_copro = []
+
+    if len(st.session_state.facade_acces_copro) > 0:
         for img in st.session_state["facade_acces_copro"]:
             st.image(img, width=200)
             st.write("")
@@ -475,6 +483,10 @@ def section_acces():
     )
     if parking_upload:
         st.session_state["facade_acces_parking"] = parking_upload
+
+    if len(st.session_state.facade_acces_parking) > 0:
+        if st.button(f"Supprimer les photos", key=f"delete_facade_acces_parking"):
+            st.session_state.facade_acces_parking = []
 
     if len(st.session_state.facade_acces_parking) > 0:
         for img in st.session_state["facade_acces_parking"]:
@@ -499,6 +511,10 @@ def section_images():
         )
 
     if len(st.session_state.etats_avant_travaux.get("Arrivée réseau", [])) > 0:
+        if st.button(f"Supprimer les photos", key=f"delete_arrivee_reseau"):
+            st.session_state.etats_avant_travaux["Arrivée réseau"] = []
+
+    if len(st.session_state.etats_avant_travaux.get("Arrivée réseau", [])) > 0:
         for img in st.session_state.etats_avant_travaux["Arrivée réseau"]:
             st.image(img, width=200)
             st.write("")
@@ -516,6 +532,10 @@ def section_images():
 
         if uploaded_files:
             st.session_state.etats_avant_travaux[niveau_label] = uploaded_files
+
+        if len(st.session_state.etats_avant_travaux.get(niveau_label, [])) > 0:
+            if st.button(f"Supprimer les photos", key=f"delete_{niveau_label}"):
+                st.session_state.etats_avant_travaux[niveau_label] = []
 
         if len(st.session_state.etats_avant_travaux.get(niveau_label, [])) > 0:
             for img in st.session_state.etats_avant_travaux[niveau_label]:
@@ -536,6 +556,10 @@ def section_images():
     )
     if plan_reseau_upload2:
         st.session_state["plan_reseau2"] = plan_reseau_upload2
+
+    if len(st.session_state.plan_reseau2) > 0:
+        if st.button(f"Supprimer les photos", key=f"delete_plan_reseau2"):
+            st.session_state.plan_reseau2 = []
 
     if len(st.session_state.plan_reseau2) > 0:
         for img in st.session_state["plan_reseau2"]:
