@@ -910,17 +910,18 @@ def render_image_section(name_bigsection: str, key: str):
     # Affichage des sous-sections et upload photo
     for sub in st.session_state.sections_dict[name_bigsection]:
         with st.expander(sub, expanded=False):
-            if st.button(f"❌", key=f"delete_{name_bigsection}_{sub}"):
-                # st.session_state.sections_dict[name_bigsection].remove(sub)
-                if key in st.session_state and sub in st.session_state[key]:
-                    st.session_state[key] = []
-
             uploaded_files = st.file_uploader(
                 label="",
                 type=["jpg", "jpeg", "png"],
                 accept_multiple_files=True,
                 key=f"upload_{name_bigsection}_{sub}",
             )
+            if key in st.session_state and sub in st.session_state[key]:
+                if st.button(
+                    f"Supprimer les photos ❌", key=f"delete_{name_bigsection}_{sub}"
+                ):
+                    st.session_state[key] = []
+
             # Add to session state (with key = new_section_name)
             if uploaded_files:
                 if key not in st.session_state:
