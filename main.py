@@ -1279,8 +1279,6 @@ def main():
             file_name="etude_enedis.pdf",
             mime="application/pdf",
         )
-        # Remove the downloaded PDF from session state
-        st.session_state.generated_pdf = None
 
 
 if __name__ == "__main__":
