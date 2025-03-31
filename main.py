@@ -1244,19 +1244,19 @@ def main():
     elif section == "Matériel":
         materiel()
 
-    st.sidebar.markdown("### ↗️ Charger un document")
+    st.sidebar.markdown("### 🚗 Charger un document")
 
     saved_projects = list_saved_states()
 
     if saved_projects:
-        selected_project = st.sidebar.selectbox("États disponibles :", saved_projects)
+        selected_project = st.sidebar.selectbox("Projets disponibles :", saved_projects)
         if st.sidebar.button("Charger"):
             # load_state(selected_project)
             load_state_from_supabase(selected_project)
     else:
         st.sidebar.write("Aucun état sauvegardé pour le moment.")
 
-    st.sidebar.markdown("### ↘️ Sauvegarder un document")
+    st.sidebar.markdown("### 🚗 Sauvegarder un document")
     project_name = st.sidebar.text_input(
         "Nom du projet", value="", key="nom_projet_sidebar"
     )
@@ -1268,7 +1268,7 @@ def main():
             st.sidebar.success(f"Projet **{project_name}** sauvegardé avec succès ✅")
 
     # 📄 Génération du PDF
-    st.sidebar.markdown("### 📄 Exporter en PDF")
+    st.sidebar.markdown("### 🚗 Exporter en PDF")
     if st.sidebar.button("Exporter"):
         pdf = generation_pdf()  # cette fonction doit RETURN le pdf
 
@@ -1286,6 +1286,13 @@ def main():
             file_name="etude_enedis.pdf",
             mime="application/pdf",
         )
+
+    # réinitialiser le state
+    st.sidebar.markdown("### 🚗 Réinitialiser le formulaire")
+    if st.sidebar.button("Réinitialiser"):
+        for key in st.session_state.keys():
+            if key not in ["generated_pdf", "nom_projet_sidebar"]:
+                del st.session_state[key]
 
 
 if __name__ == "__main__":
