@@ -918,9 +918,9 @@ def render_image_section(name_bigsection: str, key: str):
             )
             if key in st.session_state and sub in st.session_state[key]:
                 if st.button(
-                    f"Supprimer les photos ❌", key=f"delete_{name_bigsection}_{sub}"
+                    f"Supprimer les photos", key=f"delete_{name_bigsection}_{sub}"
                 ):
-                    st.session_state[key] = []
+                    st.session_state[key][sub] = []
 
             # Add to session state (with key = new_section_name)
             if uploaded_files:
