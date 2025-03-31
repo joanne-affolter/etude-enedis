@@ -1293,6 +1293,7 @@ def main():
         for key in st.session_state.keys():
             if key not in ["generated_pdf", "nom_projet_sidebar"]:
                 del st.session_state[key]
+        st.rerun()
 
 
 if __name__ == "__main__":
