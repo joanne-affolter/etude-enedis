@@ -937,7 +937,7 @@ def render_image_section(name_bigsection: str, key: str):
             if sub in st.session_state.sections_dict[name_bigsection]:
                 if st.button(
                     f"Supprimer la section {sub}",
-                    key=f"delete_{name_bigsection}_{sub}",
+                    key=f"delete_sec_{name_bigsection}_{sub}",
                 ):
                     st.session_state.sections_dict[name_bigsection].remove(sub)
 
