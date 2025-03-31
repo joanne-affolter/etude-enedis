@@ -1244,8 +1244,6 @@ def main():
     elif section == "Matériel":
         materiel()
 
-    st.sidebar.markdown("### 🚗 Charger un document")
-
     saved_projects = list_saved_states()
 
     if saved_projects:
@@ -1256,7 +1254,6 @@ def main():
     else:
         st.sidebar.write("Aucun état sauvegardé pour le moment.")
 
-    st.sidebar.markdown("### 🚗 Sauvegarder un document")
     project_name = st.sidebar.text_input(
         "Nom du projet", value="", key="nom_projet_sidebar"
     )
@@ -1268,7 +1265,6 @@ def main():
             st.sidebar.success(f"Projet **{project_name}** sauvegardé avec succès ✅")
 
     # 📄 Génération du PDF
-    st.sidebar.markdown("### 🚗 Exporter en PDF")
     if st.sidebar.button("Exporter"):
         pdf = generation_pdf()  # cette fonction doit RETURN le pdf
 
@@ -1288,7 +1284,6 @@ def main():
         )
 
     # réinitialiser le state
-    st.sidebar.markdown("### 🚗 Réinitialiser le formulaire")
     if st.sidebar.button("Réinitialiser"):
         for key in st.session_state.keys():
             if key not in ["generated_pdf", "nom_projet_sidebar"]:
