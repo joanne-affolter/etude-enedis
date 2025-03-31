@@ -934,6 +934,13 @@ def render_image_section(name_bigsection: str, key: str):
     # Affichage des sous-sections et upload photo
     for sub in st.session_state.sections_dict[name_bigsection]:
         with st.expander(sub, expanded=False):
+            if name_bigsection in st.session_state.sections_dict:
+                if st.button(
+                    f"Supprimer la section {sub}",
+                    key=f"delete_{name_bigsection}_{sub}",
+                ):
+                    st.session_state.sections_dict[name_bigsection].remove(sub)
+
             uploaded_files = st.file_uploader(
                 label="",
                 type=["jpg", "jpeg", "png"],
