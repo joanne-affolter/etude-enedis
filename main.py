@@ -1276,6 +1276,10 @@ def main():
             # load_state(selected_project)
             load_state_from_supabase(selected_project)
 
+        if st.sidebar.button("Supprimer"):
+            # delete_state(selected_project)
+            delete_state_from_supabase(selected_project)
+
     else:
         st.sidebar.write("Aucun état sauvegardé pour le moment.")
 
