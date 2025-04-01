@@ -1266,9 +1266,6 @@ def main():
 
     if saved_projects:
         selected_project = st.sidebar.selectbox("Projets disponibles :", saved_projects)
-        if st.sidebar.button("Supprimer"):
-            # delete_state(selected_project)
-            delete_state_from_supabase(selected_project)
 
         if st.sidebar.button("Charger"):
             # load_state(selected_project)
