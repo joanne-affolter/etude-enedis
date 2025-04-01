@@ -147,6 +147,22 @@ def load_state_from_supabase(project_name):
         return False
 
 
+def delete_state_from_supabase(project_name):
+    conn = st.connection("supabase", type=SupabaseConnection)
+
+    result = (
+        conn.client.table("projects_state")
+        .delete()
+        .eq("project_name", project_name)
+        .execute()
+    )
+
+    if result.status_code == 204:
+        st.toast(f"Projet **{project_name}** supprimé avec succès ✅")
+    else:
+        st.error(f"Erreur lors de la suppression du projet **{project_name}** ❌")
+
+
 def init_state():
     defaults = {
         # Infos Générales
@@ -1253,6 +1269,9 @@ def main():
         if st.sidebar.button("Charger"):
             # load_state(selected_project)
             load_state_from_supabase(selected_project)
+        if st.sidebar.button("Supprimer"):
+            # delete_state(selected_project)
+            delete_state_from_supabase(selected_project)
     else:
         st.sidebar.write("Aucun état sauvegardé pour le moment.")
 
