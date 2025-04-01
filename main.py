@@ -90,27 +90,32 @@ def load_state(project_name: str) -> bool:
 def save_state_to_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
-    pickled_state = pickle.dumps(dict(st.session_state))
-    encoded = base64.b64encode(pickled_state).decode("utf-8")
+    try:
+        pickled_state = pickle.dumps(dict(st.session_state))
+        encoded = base64.b64encode(pickled_state).decode("utf-8")
 
-    # Sauvegarde ou mise à jour
-    result = (
-        conn.client.table("projects_state")
-        .select("*")
-        .eq("project_name", project_name)
-        .execute()
-    )
+        result = (
+            conn.client.table("projects_state")
+            .select("*")
+            .eq("project_name", project_name)
+            .execute()
+        )
 
-    if result.data:
-        conn.client.table("projects_state").update({"state": encoded}).eq(
-            "project_name", project_name
-        ).execute()
-    else:
-        conn.client.table("projects_state").insert(
-            {"project_name": project_name, "state": encoded}
-        ).execute()
+        if result.data:
+            conn.client.table("projects_state").update({"state": encoded}).eq(
+                "project_name", project_name
+            ).execute()
+        else:
+            conn.client.table("projects_state").insert(
+                {"project_name": project_name, "state": encoded}
+            ).execute()
 
-    st.toast(f"Projet **{project_name}** sauvegardé (pickled)")
+        st.toast(f"Projet **{project_name}** sauvegardé (pickled)")
+        return True
+
+    except Exception as e:
+        st.error(f"Erreur lors de la sauvegarde : {e}")
+        return False
 
 
 def load_state_from_supabase(project_name):
