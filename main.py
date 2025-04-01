@@ -111,6 +111,7 @@ def save_state_to_supabase(project_name):
             ).execute()
 
         st.toast(f"Projet **{project_name}** sauvegardé (pickled)")
+        st.rerun()  # pour que les widgets prennent les nouvelles valeurs
         return True
 
     except Exception as e:
