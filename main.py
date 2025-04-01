@@ -154,18 +154,20 @@ def load_state_from_supabase(project_name):
 
 def delete_state_from_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
-
-    result = (
-        conn.client.table("projects_state")
-        .delete()
-        .eq("project_name", project_name)
-        .execute()
-    )
-
-    if result.status_code == 204:
+    try:
+        result = (
+            conn.client.table("projects_state")
+            .delete()
+            .eq("project_name", project_name)
+            .execute()
+        )
         st.toast(f"Projet **{project_name}** supprimé avec succès ✅")
-    else:
-        st.error(f"Erreur lors de la suppression du projet **{project_name}** ❌")
+        st.rerun()  # pour que les widgets prennent les nouvelles valeurs
+
+        return True
+    except Exception as e:
+        st.error(f"Erreur lors de la suppression : {e}")
+        return False
 
 
 def init_state():
