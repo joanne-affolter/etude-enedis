@@ -1287,6 +1287,7 @@ def generation_pdf():
         )
 
         # Create materiel table
+        """
         material_parking_interieur = ""
         material_parking_exterieur = ""
 
@@ -1361,6 +1362,8 @@ def generation_pdf():
             "materiel_di_parking_sol",
         )
 
+        """
+
         # Process xlsx file
         excel_file = st.session_state.documents
         if excel_file:
@@ -1411,8 +1414,10 @@ def generation_pdf():
             "{PREFINANCEMENT_ENEDIS}": prefinancement_enedis,
             "{PREFINANCEMENT_DEMANDEUR}": prefinancement_demandeur,
             # Matériel
-            "{MATERIEL_PARKING_INTERIEUR}": material_parking_interieur,
-            "{MATERIEL_PARKING_EXTERIEUR}": material_parking_exterieur,
+            # "{MATERIEL_PARKING_INTERIEUR}": material_parking_interieur,
+            # "{MATERIEL_PARKING_EXTERIEUR}": material_parking_exterieur,
+            "{MATERIEL_PARKING_INTERIEUR}": "",
+            "{MATERIEL_PARKING_EXTERIEUR}": "",
         }
 
         insert_image_to_fields(
