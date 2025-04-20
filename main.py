@@ -429,11 +429,9 @@ def section_technique():
     for i in range(int(st.session_state.nombre_parkings)):
         var_name = f"description_technique_{i}"
 
-        if var_name not in st.session_state:
-            st.session_state[var_name] = ""
-
         st.text_input(
             f"Description de la solution technique - Parking {i + 1}",
+            value=st.session_state.get(var_name, ""),  # 👈 C'est ça la clé
             key=var_name,
         )
 
@@ -443,13 +441,11 @@ def section_technique():
     for i in range(int(st.session_state.nombre_parkings)):
         var_name_places = f"nb_places_{i}"
 
-        if var_name_places not in st.session_state:
-            st.session_state[var_name_places] = 0
-
         st.number_input(
             f"Nombre de places - Parking {i + 1}",
             min_value=0,
             step=1,
+            value=st.session_state.get(var_name_places, 0),  # 👈 ici aussi
             key=var_name_places,
         )
 
@@ -459,13 +455,11 @@ def section_technique():
     for i in range(int(st.session_state.nombre_parkings)):
         var_name_puissance = f"puissance_irve_{i}"
 
-        if var_name_puissance not in st.session_state:
-            st.session_state[var_name_puissance] = 0
-
         st.number_input(
             f"Puissance IRVE - Parking {i + 1} (KVA)",
             min_value=0,
             step=1,
+            value=st.session_state.get(var_name_puissance, 0),  # 👈 et ici
             key=var_name_puissance,
         )
 
