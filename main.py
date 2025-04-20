@@ -159,17 +159,26 @@ def load_state_from_supabase(project_name):
         # 3. Decode from base64
         decoded_bytes = base64.b64decode(full_encoded)
 
+        loaded_state = None
+
+        # 4. Try decompress then pickle
         try:
-            # Try to decompress
-            pickled = zlib.decompress(decoded_bytes)
-            loaded_state = pickle.loads(pickled)
+            decompressed = zlib.decompress(decoded_bytes)
+            loaded_state = pickle.loads(decompressed)
             st.toast(f"✅ Projet **{project_name}** chargé (compressed version)")
         except zlib.error:
-            # If decompression fails, fallback to direct pickle
-            loaded_state = pickle.loads(decoded_bytes)
-            st.toast(f"✅ Projet **{project_name}** chargé (uncompressed version)")
+            try:
+                loaded_state = pickle.loads(decoded_bytes)
+                st.toast(f"✅ Projet **{project_name}** chargé (uncompressed version)")
+            except Exception as e:
+                st.error(f"Erreur lors du chargement (pickle error): {e}")
+                return False
 
-        # 4. Restore session state
+        if loaded_state is None:
+            st.error("Erreur: Impossible de charger l'état du projet.")
+            return False
+
+        # 5. Restore session state
         for key, value in loaded_state.items():
             st.session_state[key] = value
 
@@ -177,7 +186,7 @@ def load_state_from_supabase(project_name):
         return True
 
     except Exception as e:
-        st.error(f"Erreur lors du chargement : {e}")
+        st.error(f"Erreur lors du chargement (général): {e}")
         return False
 
 
