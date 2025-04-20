@@ -175,13 +175,8 @@ def load_state_from_supabase(project_name):
             loaded_state.get("facade_acces_parking")
         )
 
-        loaded_state["etats_avant_travaux"] = decode_files(
-            loaded_state.get("etats_avant_travaux")
-        )
-
-        loaded_state["img_arrivee_reseau"] = decode_files(
-            loaded_state.get("img_arrivee_reseau")
-        )
+        # NEW
+        loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
 
         # Documents Excel
         if loaded_state.get("documents"):
@@ -643,12 +638,17 @@ def section_images():
 
     st.markdown("#### Etat avant Travaux")
 
+    # 1. Arrivée réseau
     uploaded_file_arrivee_reseau = st.file_uploader(
         "Arrivée réseau",
         type=["png", "jpg", "jpeg"],
         accept_multiple_files=True,
         key="arrivee_reseau_key",
     )
+
+    if "Arrivée réseau" not in st.session_state.etats_avant_travaux:
+        st.session_state.etats_avant_travaux["Arrivée réseau"] = []
+
     if uploaded_file_arrivee_reseau:
         st.session_state.etats_avant_travaux["Arrivée réseau"] = (
             uploaded_file_arrivee_reseau
@@ -663,6 +663,8 @@ def section_images():
             st.image(img, width=200)
             st.write("")
             st.write("")
+
+    # 2. Autres images
 
     for i in range(int(st.session_state.nombre_de_niveaux)):
         niveau_label = f"Niveau -{i}" if i > 0 else "Niveau 0"
