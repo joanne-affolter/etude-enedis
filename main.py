@@ -225,24 +225,26 @@ def load_state_from_supabase(project_name):
         )
         loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
 
-        loaded_state["img_parametres_generaux"] = decode_files_dict(
-            loaded_state.get("img_parametres_generaux")
-        )
-        loaded_state["img_arrivee_reseau"] = decode_files_dict(
-            loaded_state.get("img_arrivee_reseau")
-        )
-        loaded_state["img_distribution_parking"] = decode_files_dict(
-            loaded_state.get("img_distribution_parking")
-        )
-        loaded_state["img_plans_apres_travaux"] = decode_files_dict(
-            loaded_state.get("img_plans_apres_travaux")
-        )
-        loaded_state["img_synoptique"] = decode_files_dict(
-            loaded_state.get("img_synoptique")
-        )
-        loaded_state["img_calcul_colonne_electrique"] = decode_files_dict(
-            loaded_state.get("img_calcul_colonne_electrique")
-        )
+        loaded_state["sections_dict"] = {
+            "Paramètres généraux": decode_files_dict(
+                loaded_state["sections_dict"].get("Paramètres généraux")
+            ),
+            "Arrivée réseau et pied de colonne": decode_files_dict(
+                loaded_state["sections_dict"].get("Arrivée réseau et pied de colonne")
+            ),
+            "Distribution du parking": decode_files_dict(
+                loaded_state["sections_dict"].get("Distribution du parking")
+            ),
+            "Plans après travaux": decode_files_dict(
+                loaded_state["sections_dict"].get("Plans après travaux")
+            ),
+            "Synoptique": decode_files_dict(
+                loaded_state["sections_dict"].get("Synoptique")
+            ),
+            "Calcul de colonne électrique": decode_files_dict(
+                loaded_state["sections_dict"].get("Calcul de colonne électrique")
+            ),
+        }
 
         # Documents Excel
         if loaded_state.get("documents"):
