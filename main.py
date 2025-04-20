@@ -4,6 +4,7 @@ import pickle
 import os
 import json
 import base64
+import zlib
 
 st.set_page_config(layout="wide", page_title="Étude ENEDIS")
 
@@ -91,8 +92,10 @@ def save_state_to_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     try:
+        # ➔ Compress first!
         pickled_state = pickle.dumps(dict(st.session_state))
-        encoded = base64.b64encode(pickled_state).decode("utf-8")
+        compressed = zlib.compress(pickled_state)
+        encoded = base64.b64encode(compressed).decode("utf-8")
 
         result = (
             conn.client.table("projects_state")
@@ -110,9 +113,13 @@ def save_state_to_supabase(project_name):
                 {"project_name": project_name, "state": encoded}
             ).execute()
 
-        st.toast(f"Projet **{project_name}** sauvegardé (pickled)")
-        st.rerun()  # pour que les widgets prennent les nouvelles valeurs
+        st.toast(f"Projet **{project_name}** sauvegardé (compressed pickled)")
+        st.rerun()
         return True
+
+    except Exception as e:
+        st.error(f"Erreur lors de la sauvegarde : {e}")
+        return False
 
     except Exception as e:
         st.error(f"Erreur lors de la sauvegarde : {e}")
