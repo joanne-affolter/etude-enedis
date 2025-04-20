@@ -1144,8 +1144,9 @@ def render_image_section(name_bigsection: str, key: str):
                     st.session_state[key][sub] = []
 
             # Add to session state (with key = new_section_name)
+
             if uploaded_files:
-                if key not in st.session_state:
+                if key not in st.session_state or st.session_state[key] is None:
                     st.session_state[key] = {}
                 st.session_state[key][sub] = uploaded_files
 
