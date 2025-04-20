@@ -77,94 +77,112 @@ def save_state_to_supabase(project_name):
             result[niveau] = encoded_files
         return result
 
-    data = {
-        "project_name": project_name,
-        # Infos Générales
-        "adresse_site": st.session_state.adresse_site,
-        "num_affaire": st.session_state.num_affaire,
-        "date_saisie": str(st.session_state.date_saisie),
-        "date_construction_immeuble": str(st.session_state.date_construction_immeuble),
-        "avec_sans_prefinancement": st.session_state.avec_sans_prefinancement,
-        "parking_interieur": st.session_state.parking_interieur,
-        "parking_exterieur": st.session_state.parking_exterieur,
-        "nombre_parkings": st.session_state.nombre_parkings,
-        "nombre_de_niveaux": st.session_state.nombre_de_niveaux,
-        "nombre_places_stationnement": st.session_state.nombre_places_stationnement,
-        # Infos Fonctionnelles
-        "date_visite_technique": str(st.session_state.date_visite_technique),
-        "date_ag": str(st.session_state.date_ag),
-        "date_debut_chantier": str(st.session_state.date_debut_chantier),
-        "date_fin_chantier": str(st.session_state.date_fin_chantier),
-        # Contacts
-        "reference_pole_enedis": st.session_state.reference_pole_enedis,
-        "adresse_pole_enedis": st.session_state.adresse_pole_enedis,
-        "nom_charge_projet": st.session_state.nom_charge_projet,
-        "tel_charge_projet": st.session_state.tel_charge_projet,
-        "email_charge_projet": st.session_state.email_charge_projet,
-        "nom_prestataire": st.session_state.nom_prestataire,
-        "tel_prestataire": st.session_state.tel_prestataire,
-        "email_prestataire": st.session_state.email_prestataire,
-        "nom_syndic": st.session_state.nom_syndic,
-        "adresse_syndic": st.session_state.adresse_syndic,
-        "nom_interlocuteur_syndic": st.session_state.nom_interlocuteur_syndic,
-        "tel_syndic": st.session_state.tel_syndic,
-        "email_syndic": st.session_state.email_syndic,
-        # Champs dynamiques regroupés explicitement !
-        "description_technique_0": st.session_state.get("description_technique_0", ""),
-        "description_technique_1": st.session_state.get("description_technique_1", ""),
-        "description_technique_2": st.session_state.get("description_technique_2", ""),
-        "description_technique_3": st.session_state.get("description_technique_3", ""),
-        "description_technique_4": st.session_state.get("description_technique_4", ""),
-        "description_technique_5": st.session_state.get("description_technique_5", ""),
-        "nb_places_0": st.session_state.get("nb_places_0", 0),
-        "nb_places_1": st.session_state.get("nb_places_1", 0),
-        "nb_places_2": st.session_state.get("nb_places_2", 0),
-        "nb_places_3": st.session_state.get("nb_places_3", 0),
-        "nb_places_4": st.session_state.get("nb_places_4", 0),
-        "nb_places_5": st.session_state.get("nb_places_5", 0),
-        "puissance_irve_0": st.session_state.get("puissance_irve_0", 0),
-        "puissance_irve_1": st.session_state.get("puissance_irve_1", 0),
-        "puissance_irve_2": st.session_state.get("puissance_irve_2", 0),
-        "puissance_irve_3": st.session_state.get("puissance_irve_3", 0),
-        "puissance_irve_4": st.session_state.get("puissance_irve_4", 0),
-        "puissance_irve_5": st.session_state.get("puissance_irve_5", 0),
-        # Infos Techniques
-        "type_chauffage": st.session_state.type_chauffage,
-        "coffret": st.session_state.coffret,
-        "plan_reseau": encode_files(st.session_state.plan_reseau),
-        "documents": base64.b64encode(st.session_state.documents.read()).decode("utf-8")
-        if st.session_state.documents
-        else None,
-        # Accès
-        "moyen_acces_copro": st.session_state.moyen_acces_copro,
-        "moyen_acces_parking": st.session_state.moyen_acces_parking,
-        "facade_acces_copro": encode_files(st.session_state.facade_acces_copro),
-        "facade_acces_parking": encode_files(st.session_state.facade_acces_parking),
-        # Préfinancement
-        "prefinancement_enedis": st.session_state.prefinancement_enedis,
-        "prefinancement_demandeur": st.session_state.prefinancement_demandeur,
-        # Images
-        "etats_avant_travaux": encode_files_dict(st.session_state.etats_avant_travaux),
-        "plan_reseau2": encode_files(st.session_state.plan_reseau2),
-        "sections_dict": {
-            "Paramètres généraux": encode_files_dict(
+    data = (
+        {
+            "project_name": project_name,
+            # Infos Générales
+            "adresse_site": st.session_state.adresse_site,
+            "num_affaire": st.session_state.num_affaire,
+            "date_saisie": str(st.session_state.date_saisie),
+            "date_construction_immeuble": str(
+                st.session_state.date_construction_immeuble
+            ),
+            "avec_sans_prefinancement": st.session_state.avec_sans_prefinancement,
+            "parking_interieur": st.session_state.parking_interieur,
+            "parking_exterieur": st.session_state.parking_exterieur,
+            "nombre_parkings": st.session_state.nombre_parkings,
+            "nombre_de_niveaux": st.session_state.nombre_de_niveaux,
+            "nombre_places_stationnement": st.session_state.nombre_places_stationnement,
+            # Infos Fonctionnelles
+            "date_visite_technique": str(st.session_state.date_visite_technique),
+            "date_ag": str(st.session_state.date_ag),
+            "date_debut_chantier": str(st.session_state.date_debut_chantier),
+            "date_fin_chantier": str(st.session_state.date_fin_chantier),
+            # Contacts
+            "reference_pole_enedis": st.session_state.reference_pole_enedis,
+            "adresse_pole_enedis": st.session_state.adresse_pole_enedis,
+            "nom_charge_projet": st.session_state.nom_charge_projet,
+            "tel_charge_projet": st.session_state.tel_charge_projet,
+            "email_charge_projet": st.session_state.email_charge_projet,
+            "nom_prestataire": st.session_state.nom_prestataire,
+            "tel_prestataire": st.session_state.tel_prestataire,
+            "email_prestataire": st.session_state.email_prestataire,
+            "nom_syndic": st.session_state.nom_syndic,
+            "adresse_syndic": st.session_state.adresse_syndic,
+            "nom_interlocuteur_syndic": st.session_state.nom_interlocuteur_syndic,
+            "tel_syndic": st.session_state.tel_syndic,
+            "email_syndic": st.session_state.email_syndic,
+            # Champs dynamiques regroupés explicitement !
+            "description_technique_0": st.session_state.get(
+                "description_technique_0", ""
+            ),
+            "description_technique_1": st.session_state.get(
+                "description_technique_1", ""
+            ),
+            "description_technique_2": st.session_state.get(
+                "description_technique_2", ""
+            ),
+            "description_technique_3": st.session_state.get(
+                "description_technique_3", ""
+            ),
+            "description_technique_4": st.session_state.get(
+                "description_technique_4", ""
+            ),
+            "description_technique_5": st.session_state.get(
+                "description_technique_5", ""
+            ),
+            "nb_places_0": st.session_state.get("nb_places_0", 0),
+            "nb_places_1": st.session_state.get("nb_places_1", 0),
+            "nb_places_2": st.session_state.get("nb_places_2", 0),
+            "nb_places_3": st.session_state.get("nb_places_3", 0),
+            "nb_places_4": st.session_state.get("nb_places_4", 0),
+            "nb_places_5": st.session_state.get("nb_places_5", 0),
+            "puissance_irve_0": st.session_state.get("puissance_irve_0", 0),
+            "puissance_irve_1": st.session_state.get("puissance_irve_1", 0),
+            "puissance_irve_2": st.session_state.get("puissance_irve_2", 0),
+            "puissance_irve_3": st.session_state.get("puissance_irve_3", 0),
+            "puissance_irve_4": st.session_state.get("puissance_irve_4", 0),
+            "puissance_irve_5": st.session_state.get("puissance_irve_5", 0),
+            # Infos Techniques
+            "type_chauffage": st.session_state.type_chauffage,
+            "coffret": st.session_state.coffret,
+            "plan_reseau": encode_files(st.session_state.plan_reseau),
+            "documents": base64.b64encode(st.session_state.documents.read()).decode(
+                "utf-8"
+            )
+            if st.session_state.documents
+            else None,
+            # Accès
+            "moyen_acces_copro": st.session_state.moyen_acces_copro,
+            "moyen_acces_parking": st.session_state.moyen_acces_parking,
+            "facade_acces_copro": encode_files(st.session_state.facade_acces_copro),
+            "facade_acces_parking": encode_files(st.session_state.facade_acces_parking),
+            # Préfinancement
+            "prefinancement_enedis": st.session_state.prefinancement_enedis,
+            "prefinancement_demandeur": st.session_state.prefinancement_demandeur,
+            # Images
+            "etats_avant_travaux": encode_files_dict(
+                st.session_state.etats_avant_travaux
+            ),
+            "plan_reseau2": encode_files(st.session_state.plan_reseau2),
+            "img_parametres_generaux": encode_files_dict(
                 st.session_state.img_parametres_generaux
             ),
-            "Arrivée réseau et pied de colonne": encode_files_dict(
+            "img_arrivee_reseau": encode_files_dict(
                 st.session_state.img_arrivee_reseau
             ),
-            "Distribution du parking": encode_files_dict(
+            "img_distribution_parking": encode_files_dict(
                 st.session_state.img_distribution_parking
             ),
-            "Plans après travaux": encode_files_dict(
+            "img_plans_apres_travaux": encode_files_dict(
                 st.session_state.img_plans_apres_travaux
             ),
-            "Synoptique": encode_files_dict(st.session_state.img_synoptique),
-            "Calcul de colonne électrique": encode_files_dict(
+            "img_synoptique": encode_files_dict(st.session_state.img_synoptique),
+            "img_calcul_colonne_electrique": encode_files_dict(
                 st.session_state.img_calcul_colonne_electrique
             ),
         },
-    }
+    )
 
     conn.client.table("projects_state2").upsert(
         data, on_conflict="project_name"
@@ -1142,10 +1160,11 @@ def materiel():
 
 def render_image_section(name_bigsection: str):
     # Initialize
-    if "sections_dict" not in st.session_state:
+    """if "sections_dict" not in st.session_state:
         st.session_state.sections_dict = {}
     if name_bigsection not in st.session_state.sections_dict:
         st.session_state.sections_dict[name_bigsection] = {}
+    """
 
     st.write("")
     st.write("")
