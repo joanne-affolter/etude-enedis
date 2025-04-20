@@ -1639,8 +1639,8 @@ def main():
         section_prefinancement()
     elif section == "Images à fournir":
         section_images()
-    # elif section == "Matériel":
-    #    materiel()
+    elif section == "Matériel":
+        materiel()
 
     st.sidebar.markdown("### Charger un document")
 
