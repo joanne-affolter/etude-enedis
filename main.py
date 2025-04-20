@@ -147,12 +147,22 @@ def save_state_to_supabase(project_name):
         "etats_avant_travaux": encode_files_dict(st.session_state.etats_avant_travaux),
         "plan_reseau2": encode_files(st.session_state.plan_reseau2),
         "sections_dict": {
-            "Paramètres généraux": st.session_state.img_parametres_generaux,
-            "Arrivée réseau et pied de colonne": st.session_state.img_arrivee_reseau,
-            "Distribution du parking": st.session_state.img_distribution_parking,
-            "Plans après travaux": st.session_state.img_plans_apres_travaux,
-            "Synoptique": st.session_state.img_synoptique,
-            "Calcul de colonne électrique": st.session_state.img_calcul_colonne_electrique,
+            "Paramètres généraux": encode_files_dict(
+                st.session_state.img_parametres_generaux
+            ),
+            "Arrivée réseau et pied de colonne": encode_files_dict(
+                st.session_state.img_arrivee_reseau
+            ),
+            "Distribution du parking": encode_files_dict(
+                st.session_state.img_distribution_parking
+            ),
+            "Plans après travaux": encode_files_dict(
+                st.session_state.img_plans_apres_travaux
+            ),
+            "Synoptique": encode_files_dict(st.session_state.img_synoptique),
+            "Calcul de colonne électrique": encode_files_dict(
+                st.session_state.img_calcul_colonne_electrique
+            ),
         },
     }
 
