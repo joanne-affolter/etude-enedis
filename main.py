@@ -272,6 +272,23 @@ def load_state_from_supabase(project_name):
                 base64.b64decode(loaded_state["documents"])
             )
 
+        # Après avoir décodé ton loaded_state, pour corriger toutes les dates :
+        for date_field in [
+            "date_saisie",
+            "date_construction_immeuble",
+            "date_visite_technique",
+            "date_ag",
+            "date_debut_chantier",
+            "date_fin_chantier",
+        ]:
+            if date_field in loaded_state and isinstance(loaded_state[date_field], str):
+                try:
+                    loaded_state[date_field] = datetime.datetime.strptime(
+                        loaded_state[date_field], "%Y-%m-%d"
+                    ).date()
+                except Exception as e:
+                    st.warning(f"Erreur en convertissant {date_field}: {e}")
+
         # Restaurer les valeurs simples
         for key, value in loaded_state.items():
             if key not in [
@@ -294,22 +311,6 @@ def load_state_from_supabase(project_name):
 
         for i, val in enumerate(loaded_state.get("puissance_irve", [])):
             st.session_state[f"puissance_irve_{i}"] = val
-
-        # Now dates,
-        for date_field in [
-            "date_saisie",
-            "date_construction_immeuble",
-            "date_visite_technique",
-            "date_ag",
-            "date_debut_chantier",
-            "date_fin_chantier",
-        ]:
-            if loaded_state.get(date_field) and isinstance(
-                loaded_state[date_field], str
-            ):
-                loaded_state[date_field] = datetime.datetime.strptime(
-                    loaded_state[date_field], "%Y-%m-%d"
-                ).date()
 
         st.toast(f"✅ Projet **{project_name}** chargé avec succès.")
         st.rerun()
