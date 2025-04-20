@@ -64,6 +64,17 @@ def save_state_to_supabase(project_name):
             else []
         )
 
+    def encode_files_dict(etats_dict):
+        result = {}
+        for niveau, files in etats_dict.items():
+            encoded_files = []
+            for file in files:
+                # ⚡ IMPORTANT: remettre le curseur au début
+                file.seek(0)
+                encoded_files.append(base64.b64encode(file.read()).decode("utf-8"))
+            result[niveau] = encoded_files
+        return result
+
     print("HEY", st.session_state.etats_avant_travaux)
 
     data = {
@@ -133,7 +144,7 @@ def save_state_to_supabase(project_name):
         "prefinancement_enedis": st.session_state.prefinancement_enedis,
         "prefinancement_demandeur": st.session_state.prefinancement_demandeur,
         # Images
-        "etats_avant_travaux": st.session_state.etats_avant_travaux,
+        "etats_avant_travaux": encode_files_dict(st.session_state.etats_avant_travaux),
     }
 
     conn.client.table("projects_state2").upsert(
