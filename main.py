@@ -1210,7 +1210,7 @@ def render_image_section(name_bigsection: str):
                     st.experimental_rerun()
 
                 for img in st.session_state.sections_dict[name_bigsection][sub]:
-                    st.image(img, caption=img.name, width=200)
+                    st.image(img, caption="", width=200)
 
 
 def generation_pdf():
