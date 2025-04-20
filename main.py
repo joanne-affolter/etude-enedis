@@ -397,7 +397,7 @@ def section_technique():
         if var_name not in st.session_state:
             st.session_state[var_name] = ""
 
-        st.session_state[var_name] = st.text_input(
+        st.text_input(
             f"Description de la solution technique - {description_label}",
             value=st.session_state[var_name],
             key=f"description_{i}",
@@ -414,7 +414,7 @@ def section_technique():
         if var_name not in st.session_state:
             st.session_state[var_name] = 0
 
-        st.session_state[var_name] = st.number_input(
+        st.number_input(
             f"Nombre de places - {label}",
             value=st.session_state[var_name],
             key=f"nb_places_{i}",
@@ -431,7 +431,7 @@ def section_technique():
         if var_name not in st.session_state:
             st.session_state[var_name] = 0
 
-        st.session_state[var_name] = st.number_input(
+        st.number_input(
             f"Puissance IRVE - {puissance_irve_label} (KVA)",
             value=st.session_state[var_name],
             key=f"puissance_irve_{i}",
