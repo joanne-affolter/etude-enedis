@@ -429,11 +429,15 @@ def section_technique():
     for i in range(int(st.session_state.nombre_parkings)):
         var_name = f"description_technique_{i}"
 
-        st.text_input(
+        x = st.text_input(
             f"Description de la solution technique - Parking {i + 1}",
-            value=st.session_state.get(var_name, ""),  # 👈 C'est ça la clé
             key=var_name,
         )
+        if x != "":
+            st.session_state[var_name] = x
+
+        if st.session_state[var_name] != "":
+            st.write(f"**{st.session_state[var_name]}**")
 
     st.write("")
     st.markdown("#### 🚘 Nombre de places par parking")
@@ -441,13 +445,18 @@ def section_technique():
     for i in range(int(st.session_state.nombre_parkings)):
         var_name_places = f"nb_places_{i}"
 
-        st.number_input(
+        x = st.number_input(
             f"Nombre de places - Parking {i + 1}",
             min_value=0,
             step=1,
-            value=st.session_state.get(var_name_places, 0),  # 👈 ici aussi
             key=var_name_places,
         )
+
+        if x != 0:
+            st.session_state[var_name_places] = x
+
+        if st.session_state[var_name_places] != 0:
+            st.write(f"**{st.session_state[var_name_places]}**")
 
     st.write("")
     st.markdown("#### ⚡️ Puissance IRVE")
@@ -455,13 +464,18 @@ def section_technique():
     for i in range(int(st.session_state.nombre_parkings)):
         var_name_puissance = f"puissance_irve_{i}"
 
-        st.number_input(
+        x = st.number_input(
             f"Puissance IRVE - Parking {i + 1} (KVA)",
             min_value=0,
             step=1,
-            value=st.session_state.get(var_name_puissance, 0),  # 👈 et ici
             key=var_name_puissance,
         )
+
+        if x != 0:
+            st.session_state[var_name_puissance] = x
+
+        if st.session_state[var_name_puissance] != 0:
+            st.write(f"**{st.session_state[var_name_puissance]}**")
 
     st.write("")
     st.write("")
