@@ -436,7 +436,7 @@ def section_technique():
             st.session_state[var_name] = x
 
         if st.session_state[var_name] != "":
-            st.write(f"**{st.session_state[var_name]}**")
+            st.write(f"Valeur actuelle : **{st.session_state[var_name]}**")
 
     st.write("")
     st.markdown("#### 🚘 Nombre de places par parking")
@@ -454,7 +454,7 @@ def section_technique():
             st.session_state[var_name_places] = x
 
         if st.session_state[var_name_places] != 0:
-            st.write(f"**{st.session_state[var_name_places]}**")
+            st.write(f"Valeur actuelle : **{st.session_state[var_name_places]}**")
 
     st.write("")
     st.markdown("#### ⚡️ Puissance IRVE")
@@ -472,7 +472,7 @@ def section_technique():
             st.session_state[var_name_puissance] = x
 
         if st.session_state[var_name_puissance] != 0:
-            st.write(f"**{st.session_state[var_name_puissance]}**")
+            st.write(f"Valeur actuelle : **{st.session_state[var_name_puissance]}**")
 
     st.write("")
     st.write("")
