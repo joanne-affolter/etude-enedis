@@ -1149,7 +1149,12 @@ def render_image_section(name_bigsection: str, key: str):
                     st.session_state[key] = {}
                 st.session_state[key][sub] = uploaded_files
 
-            if key in st.session_state and sub in st.session_state[key]:
+            # if key in st.session_state and sub in st.session_state[key]:
+            if (
+                key in st.session_state
+                and st.session_state[key]
+                and sub in st.session_state[key]
+            ):
                 for img in st.session_state[key][sub]:
                     st.image(img, caption=img.name, width=200)
 
