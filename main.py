@@ -96,7 +96,7 @@ def save_state_to_supabase(project_name):
 
         result = (
             conn.client.table("projects_state")
-            .select("*")
+            .select("id")
             .eq("project_name", project_name)
             .execute()
         )
