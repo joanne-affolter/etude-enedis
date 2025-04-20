@@ -101,6 +101,7 @@ def save_state_to_supabase(project_name, chunk_size=50000):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     try:
+        update_dynamic_lists_before_saving()
         # ➔ Compress first!
         pickled_state = pickle.dumps(dict(st.session_state))
         compressed = zlib.compress(pickled_state)
@@ -322,6 +323,32 @@ def section_infos_fonctionnelles():
     st.session_state.date_fin_chantier = st.date_input(
         "Date de fin de chantier", value=st.session_state.date_fin_chantier
     )
+
+
+def update_dynamic_lists_before_saving():
+    dynamic_mappings = {
+        "nb_places": int(st.session_state.get("nombre_parkings", 1)),
+        "puissance_irve": int(st.session_state.get("nombre_parkings", 1)),
+        "description_technique": int(st.session_state.get("nombre_parkings", 1)),
+    }
+
+    for field_name, count in dynamic_mappings.items():
+        new_list = []
+        for i in range(count):
+            widget_key = (
+                f"{field_name[:-1]}_{i}"
+                if field_name != "description_technique"
+                else f"description_{i}"
+            )
+            new_list.append(
+                st.session_state.get(
+                    widget_key,
+                    0
+                    if "nb_places" in field_name or "puissance_irve" in field_name
+                    else "",
+                )
+            )
+        st.session_state[field_name] = new_list
 
 
 def section_technique():
