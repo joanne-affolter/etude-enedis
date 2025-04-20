@@ -976,7 +976,6 @@ def section_prefinancement():
         elif not checked and texte in st.session_state.prefinancement_demandeur:
             st.session_state.prefinancement_demandeur.remove(texte)
 
-
 def materiel():
     st.header("Matériel")
 
@@ -984,280 +983,208 @@ def materiel():
 
     with st.expander("Raccordement au réseau (hors câble)", expanded=False):
         if "materiel_interieur_raccordement_au_reseau" not in st.session_state:
-            st.session_state.materiel_interieur_raccordement_au_reseau = {
-                row["code"]: 0 for row in MATERIEL_RACCORDEMENT_AU_RESEAU
-            }
+            st.session_state.materiel_interieur_raccordement_au_reseau = {}
         for row in MATERIEL_RACCORDEMENT_AU_RESEAU:
-            st.session_state.materiel_interieur_raccordement_au_reseau[row["code"]] = (
-                st.number_input(
-                    label=f"{row['libelle']} ({row['unite']})",
-                    min_value=0,
-                    step=1,
-                    value=st.session_state.materiel_interieur_raccordement_au_reseau[
-                        row["code"]
-                    ],
-                    key=f"qte_{row['code']}",
-                )
+            st.session_state.materiel_interieur_raccordement_au_reseau[row["code"]] = st.number_input(
+                label=f"{row['libelle']} ({row['unite']})",
+                min_value=0,
+                step=1,
+                value=st.session_state.materiel_interieur_raccordement_au_reseau.get(row["code"], 0),
+                key=f"qte_{row['code']}",
             )
 
     with st.expander("Construction adaptation du pied de colonne", expanded=False):
         if "materiel_interieur_adaptation_pied_de_colonne" not in st.session_state:
-            st.session_state.materiel_interieur_adaptation_pied_de_colonne = {
-                row["code"]: 0 for row in MATERIEL_ADAPTATION_PIED_DE_COLONNE
-            }
+            st.session_state.materiel_interieur_adaptation_pied_de_colonne = {}
         for row in MATERIEL_ADAPTATION_PIED_DE_COLONNE:
-            st.session_state.materiel_interieur_adaptation_pied_de_colonne[
-                row["code"]
-            ] = st.number_input(
+            st.session_state.materiel_interieur_adaptation_pied_de_colonne[row["code"]] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_interieur_adaptation_pied_de_colonne[
-                    row["code"]
-                ],
+                value=st.session_state.materiel_interieur_adaptation_pied_de_colonne.get(row["code"], 0),
                 key=f"qte_{row['code']}",
             )
 
-    with st.expander(
-        "Construction des ouvrages collectifs (hors câble)", expanded=False
-    ):
+    with st.expander("Construction des ouvrages collectifs (hors câble)", expanded=False):
         if "materiel_interieur_construction_ouvrages" not in st.session_state:
-            st.session_state.materiel_interieur_construction_ouvrages = {
-                row["code"]: 0 for row in MATERIEL_CONSTRUCTION_OUVRAGES_COLLECTIFS
-            }
+            st.session_state.materiel_interieur_construction_ouvrages = {}
         for row in MATERIEL_CONSTRUCTION_OUVRAGES_COLLECTIFS:
-            st.session_state.materiel_interieur_construction_ouvrages[row["code"]] = (
-                st.number_input(
-                    label=f"{row['libelle']} ({row['unite']})",
-                    min_value=0,
-                    step=1,
-                    value=st.session_state.materiel_interieur_construction_ouvrages[
-                        row["code"]
-                    ],
-                    key=f"qte_{row['code']}",
-                )
+            st.session_state.materiel_interieur_construction_ouvrages[row["code"]] = st.number_input(
+                label=f"{row['libelle']} ({row['unite']})",
+                min_value=0,
+                step=1,
+                value=st.session_state.materiel_interieur_construction_ouvrages.get(row["code"], 0),
+                key=f"qte_{row['code']}",
             )
 
     with st.expander("Construction d’une travée (hors câble)", expanded=False):
         if "materiel_construction_travee" not in st.session_state:
-            st.session_state.materiel_construction_travee = {
-                row["code"]: 0 for row in MATERIEL_CONSTRUCTION_TRAVEE
-            }
+            st.session_state.materiel_construction_travee = {}
         for row in MATERIEL_CONSTRUCTION_TRAVEE:
-            st.session_state.materiel_construction_travee[row["code"]] = (
-                st.number_input(
-                    label=f"{row['libelle']} ({row['unite']})",
-                    min_value=0,
-                    step=1,
-                    value=st.session_state.materiel_construction_travee[row["code"]],
-                    key=f"qte_{row['code']}",
-                )
+            st.session_state.materiel_construction_travee[row["code"]] = st.number_input(
+                label=f"{row['libelle']} ({row['unite']})",
+                min_value=0,
+                step=1,
+                value=st.session_state.materiel_construction_travee.get(row["code"], 0),
+                key=f"qte_{row['code']}",
             )
 
     with st.expander("Création des DI", expanded=False):
         if "materiel_creation_di" not in st.session_state:
-            st.session_state.materiel_creation_di = {
-                row["code"]: 0 for row in MATERIEL_CREATION_DI
-            }
+            st.session_state.materiel_creation_di = {}
         for row in MATERIEL_CREATION_DI:
             st.session_state.materiel_creation_di[row["code"]] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_creation_di[row["code"]],
+                value=st.session_state.materiel_creation_di.get(row["code"], 0),
                 key=f"qte_creation_di_{row['code']}",
             )
 
     with st.expander("Câbles et accessoires installés", expanded=False):
         if "materiel_cables_et_accessoires" not in st.session_state:
-            st.session_state.materiel_cables_et_accessoires = {
-                row["code"] or row["libelle"]: 0
-                for row in MATERIEL_CABLES_ET_ACCESSOIRES
-            }
+            st.session_state.materiel_cables_et_accessoires = {}
         for row in MATERIEL_CABLES_ET_ACCESSOIRES:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_cables_et_accessoires[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_cables_et_accessoires[key],
+                value=st.session_state.materiel_cables_et_accessoires.get(key, 0),
                 key=f"qte_cables_{key}",
             )
 
     with st.expander("Travaux Annexes", expanded=False):
         if "materiel_travaux_annexes" not in st.session_state:
-            st.session_state.materiel_travaux_annexes = {
-                row["code"] or row["libelle"]: 0 for row in MATERIEL_TRAVAUX_ANNEXES
-            }
+            st.session_state.materiel_travaux_annexes = {}
         for row in MATERIEL_TRAVAUX_ANNEXES:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_travaux_annexes[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_travaux_annexes[key],
+                value=st.session_state.materiel_travaux_annexes.get(key, 0),
                 key=f"qte_travaux_annexes_{key}",
             )
 
     st.subheader("Matériel pour Parking Extérieur")
 
-    with st.expander(
-        "Extension réseau (départ monobloc, etc.), liaison réseau, etc.", expanded=False
-    ):
+    with st.expander("Extension réseau (départ monobloc, etc.), liaison réseau, etc.", expanded=False):
         if "extension_reseau" not in st.session_state:
-            st.session_state.extension_reseau = {
-                row["code"] or row["libelle"]: 0 for row in EXTENSION_RESEAU
-            }
-
+            st.session_state.extension_reseau = {}
         for row in EXTENSION_RESEAU:
             key = row["code"] or row["libelle"]
-            if key not in st.session_state.extension_reseau:
-                st.session_state.extension_reseau[key] = 0
-
             st.session_state.extension_reseau[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.extension_reseau[key],
+                value=st.session_state.extension_reseau.get(key, 0),
                 key=f"qte_extension_reseau_{key}",
             )
+
     with st.expander("Raccordement", expanded=False):
         if "materiel_raccordement" not in st.session_state:
-            st.session_state.materiel_raccordement = {
-                row["code"] or row["libelle"]: 0 for row in RACCORDEMENT
-            }
+            st.session_state.materiel_raccordement = {}
         for row in RACCORDEMENT:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_raccordement[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_raccordement[key],
+                value=st.session_state.materiel_raccordement.get(key, 0),
                 key=f"qte_raccordement_{key}",
             )
 
-    with st.expander(
-        "Câble dérivation collective (valeurs pré-remplies pour si pleine terre, sinon à adapter)",
-        expanded=False,
-    ):
+    with st.expander("Câble dérivation collective (pleine terre)", expanded=False):
         if "materiel_derivation_collective" not in st.session_state:
-            st.session_state.materiel_derivation_collective = {
-                row["code"] or row["libelle"]: 0 for row in DERIVATION_COLLECTIVE
-            }
+            st.session_state.materiel_derivation_collective = {}
         for row in DERIVATION_COLLECTIVE:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_derivation_collective[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_derivation_collective[key],
+                value=st.session_state.materiel_derivation_collective.get(key, 0),
                 key=f"qte_derivation_collective_{key}",
             )
 
-    with st.expander(
-        "Dérivation collective (plutôt appelée travée en parking extérieur)",
-        expanded=False,
-    ):
+    with st.expander("Dérivation collective en parking extérieur", expanded=False):
         if "materiel_derivation_parking_exterieur" not in st.session_state:
-            st.session_state.materiel_derivation_parking_exterieur = {
-                row["code"] or row["libelle"]: 0
-                for row in DERIVATION_COLLECTIVE_EXTERIEUR
-            }
+            st.session_state.materiel_derivation_parking_exterieur = {}
         for row in DERIVATION_COLLECTIVE_EXTERIEUR:
             key = row["code"] or row["libelle"]
-            st.session_state.materiel_derivation_parking_exterieur[key] = (
-                st.number_input(
-                    label=f"{row['libelle']} ({row['unite']})",
-                    min_value=0,
-                    step=1,
-                    value=st.session_state.materiel_derivation_parking_exterieur[key],
-                    key=f"qte_derivation_parking_exterieur_{key}",
-                )
+            st.session_state.materiel_derivation_parking_exterieur[key] = st.number_input(
+                label=f"{row['libelle']} ({row['unite']})",
+                min_value=0,
+                step=1,
+                value=st.session_state.materiel_derivation_parking_exterieur.get(key, 0),
+                key=f"qte_derivation_parking_exterieur_{key}",
             )
 
     with st.expander("DI coffret exploitation", expanded=False):
         if "materiel_di_coffret_exploitation" not in st.session_state:
-            st.session_state.materiel_di_coffret_exploitation = {
-                row["code"] or row["libelle"]: 0 for row in DI_COFFRET_EXPLOITATION
-            }
+            st.session_state.materiel_di_coffret_exploitation = {}
         for row in DI_COFFRET_EXPLOITATION:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_di_coffret_exploitation[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_di_coffret_exploitation[key],
+                value=st.session_state.materiel_di_coffret_exploitation.get(key, 0),
                 key=f"qte_di_coffret_exploitation_{key}",
             )
 
-    with st.expander("Travaux Annexes", expanded=False):
+    with st.expander("Travaux Annexes (Parking extérieur)", expanded=False):
         if "materiel_travaux_annexes_ext" not in st.session_state:
-            st.session_state.materiel_travaux_annexes_ext = {
-                row["code"] or row["libelle"]: 0 for row in MATERIEL_TRAVAUX_ANNEXES_EXT
-            }
+            st.session_state.materiel_travaux_annexes_ext = {}
         for row in MATERIEL_TRAVAUX_ANNEXES_EXT:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_travaux_annexes_ext[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_travaux_annexes_ext[key],
+                value=st.session_state.materiel_travaux_annexes_ext.get(key, 0),
                 key=f"qte_travaux_annexes_ext_{key}",
             )
 
     with st.expander("DI box fermé", expanded=False):
         if "materiel_di_box_ferme" not in st.session_state:
-            st.session_state.materiel_di_box_ferme = {
-                row["code"] or row["libelle"]: 0 for row in MATERIEL_DI_BOX_FERME
-            }
-
+            st.session_state.materiel_di_box_ferme = {}
         for row in MATERIEL_DI_BOX_FERME:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_di_box_ferme[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_di_box_ferme[key],
+                value=st.session_state.materiel_di_box_ferme.get(key, 0),
                 key=f"qte_di_box_ferme_{key}",
             )
 
     with st.expander("DI mur extérieur", expanded=False):
         if "materiel_di_mur_exterieur" not in st.session_state:
-            st.session_state.materiel_di_mur_exterieur = {
-                row["code"] or row["libelle"]: 0 for row in MATERIEL_DI_MUR_EXTERIEUR
-            }
-
+            st.session_state.materiel_di_mur_exterieur = {}
         for row in MATERIEL_DI_MUR_EXTERIEUR:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_di_mur_exterieur[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_di_mur_exterieur[key],
+                value=st.session_state.materiel_di_mur_exterieur.get(key, 0),
                 key=f"qte_di_mur_exterieur_{key}",
             )
 
-    with st.expander(
-        "DI Parking extérieur sans mur, installation au sol (raccordement direct REMBT)",
-        expanded=False,
-    ):
+    with st.expander("DI sol (extérieur sans mur)", expanded=False):
         if "materiel_di_parking_sol" not in st.session_state:
-            st.session_state.materiel_di_parking_sol = {
-                row["code"] or row["libelle"]: 0 for row in MATERIEL_DI_PARKING_SOL
-            }
-
+            st.session_state.materiel_di_parking_sol = {}
         for row in MATERIEL_DI_PARKING_SOL:
             key = row["code"] or row["libelle"]
             st.session_state.materiel_di_parking_sol[key] = st.number_input(
                 label=f"{row['libelle']} ({row['unite']})",
                 min_value=0,
                 step=1,
-                value=st.session_state.materiel_di_parking_sol[key],
+                value=st.session_state.materiel_di_parking_sol.get(key, 0),
                 key=f"qte_di_parking_sol_{key}",
-            )
-
-
-def render_image_section(name_bigsection: str):
+            )def render_image_section(name_bigsection: str):
     # Initialize
     """if "sections_dict" not in st.session_state:
         st.session_state.sections_dict = {}
