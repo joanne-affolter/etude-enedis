@@ -232,9 +232,15 @@ def init_state():
         "tel_syndic": "",
         "email_syndic": "",
         # Infos Techniques
-        "description_technique": [],
-        "nb_places": [],
-        "puissance_irve": [],
+        "description_technique_0": "",
+        "description_technique_1": "",
+        "description_technique_2": "",
+        "nb_places_0": "",
+        "nb_places_1": "",
+        "nb_places_2": "",
+        "puissance_irve_0": "",
+        "puissance_irve_1": "",
+        "puissance_irve_2": "",
         "type_chauffage": "Electrique Individuel",
         "coffret": "ECP2D",
         "plan_reseau": [],
@@ -381,13 +387,19 @@ def section_technique():
     st.write("")
     st.write("")
     st.markdown("#### 📝 Description de la solution technique")
+
     for i in range(int(st.session_state.nombre_parkings)):
         description_label = f"Parking {i + 1}"
-        if len(st.session_state.description_technique) <= i:
-            st.session_state.description_technique.append("")
-        st.session_state.description_technique[i] = st.text_input(
+
+        var_name = f"description_technique_{i}"
+
+        # Initialize if missing (important!)
+        if var_name not in st.session_state:
+            st.session_state[var_name] = ""
+
+        st.session_state[var_name] = st.text_input(
             f"Description de la solution technique - {description_label}",
-            value=st.session_state.description_technique[i],
+            value=st.session_state[var_name],
             key=f"description_{i}",
         )
 
@@ -395,12 +407,16 @@ def section_technique():
     st.write("")
     st.markdown("#### 🚘 Nombre de places par parking")
     for i in range(int(st.session_state.nombre_parkings)):
-        nb_places_granual_label = f"Parking {i + 1}"
-        if len(st.session_state.nb_places) <= i:
-            st.session_state.nb_places.append(0)
-        st.session_state.nb_places[i] = st.number_input(
-            f"Nombre de places - {nb_places_granual_label}",
-            value=st.session_state.nb_places[i],
+        label = f"Parking {i + 1}"
+
+        var_name = f"nb_places_{i}"
+
+        if var_name not in st.session_state:
+            st.session_state[var_name] = 0
+
+        st.session_state[var_name] = st.number_input(
+            f"Nombre de places - {label}",
+            value=st.session_state[var_name],
             key=f"nb_places_{i}",
         )
 
@@ -409,11 +425,15 @@ def section_technique():
     st.markdown("#### ⚡️ Puissance IRVE")
     for i in range(int(st.session_state.nombre_parkings)):
         puissance_irve_label = f"Parking {i + 1}"
-        if len(st.session_state.puissance_irve) <= i:
-            st.session_state.puissance_irve.append(0)
-        st.session_state.puissance_irve[i] = st.number_input(
+
+        var_name = f"puissance_irve_{i}"
+
+        if var_name not in st.session_state:
+            st.session_state[var_name] = 0
+
+        st.session_state[var_name] = st.number_input(
             f"Puissance IRVE - {puissance_irve_label} (KVA)",
-            value=st.session_state.puissance_irve[i],
+            value=st.session_state[var_name],
             key=f"puissance_irve_{i}",
         )
 
