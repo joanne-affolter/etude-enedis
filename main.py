@@ -699,6 +699,9 @@ def section_images():
     if plan_reseau_upload2:
         st.session_state["plan_reseau2"] = plan_reseau_upload2
 
+    if "plan_reseau2" not in st.session_state or st.session_state.plan_reseau2 is None:
+        st.session_state.plan_reseau2 = []
+
     if len(st.session_state.plan_reseau2) > 0:
         if st.button(f"Supprimer les photos", key=f"delete_plan_reseau2"):
             st.session_state.plan_reseau2 = []
