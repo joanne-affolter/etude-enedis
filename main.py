@@ -175,6 +175,14 @@ def load_state_from_supabase(project_name):
             loaded_state.get("facade_acces_parking")
         )
 
+        loaded_state["etats_avant_travaux"] = decode_files(
+            loaded_state.get("etats_avant_travaux")
+        )
+
+        loaded_state["img_arrivee_reseau"] = decode_files(
+            loaded_state.get("img_arrivee_reseau")
+        )
+
         # Documents Excel
         if loaded_state.get("documents"):
             loaded_state["documents"] = BytesIO(
@@ -635,12 +643,6 @@ def section_images():
 
     st.markdown("#### Etat avant Travaux")
 
-    if (
-        "etats_avant_travaux" not in st.session_state
-        or st.session_state.etats_avant_travaux is None
-    ):
-        st.session_state.etats_avant_travaux = {}
-
     uploaded_file_arrivee_reseau = st.file_uploader(
         "Arrivée réseau",
         type=["png", "jpg", "jpeg"],
@@ -698,9 +700,6 @@ def section_images():
     )
     if plan_reseau_upload2:
         st.session_state["plan_reseau2"] = plan_reseau_upload2
-
-    if "plan_reseau2" not in st.session_state or st.session_state.plan_reseau2 is None:
-        st.session_state.plan_reseau2 = []
 
     if len(st.session_state.plan_reseau2) > 0:
         if st.button(f"Supprimer les photos", key=f"delete_plan_reseau2"):
