@@ -513,7 +513,7 @@ def section_technique():
     if st.session_state.documents:
         doc = st.session_state["documents"]
         st.markdown(
-            "Fichier téléchargé",
+            "Fichier Excel chargé ✅",
             unsafe_allow_html=True,
         )
 
