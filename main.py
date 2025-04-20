@@ -130,6 +130,8 @@ def save_state_to_supabase(project_name):
         # Préfinancement
         "prefinancement_enedis": st.session_state.prefinancement_enedis,
         "prefinancement_demandeur": st.session_state.prefinancement_demandeur,
+        # Images
+        "etats_avant_travaux": st.session_state.etats_avant_travaux,
     }
 
     conn.client.table("projects_state2").upsert(
@@ -174,8 +176,6 @@ def load_state_from_supabase(project_name):
         loaded_state["facade_acces_parking"] = decode_files(
             loaded_state.get("facade_acces_parking")
         )
-
-        print("HEEYYYYYYY", loaded_state.get("etats_avant_travaux"))
 
         # NEW
         loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
