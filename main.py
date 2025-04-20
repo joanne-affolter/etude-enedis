@@ -155,16 +155,23 @@ def load_state_from_supabase(project_name):
         chunks_sorted = sorted(result.data, key=lambda x: x["part_number"])
         full_encoded = "".join(chunk["state"] for chunk in chunks_sorted)
 
-        # 3. Decode -> Decompress -> Unpickle
-        compressed = base64.b64decode(full_encoded)
-        pickled = zlib.decompress(compressed)
-        loaded_state = pickle.loads(pickled)
+        # 3. Decode from base64
+        decoded_bytes = base64.b64decode(full_encoded)
+
+        try:
+            # Try to decompress
+            pickled = zlib.decompress(decoded_bytes)
+            loaded_state = pickle.loads(pickled)
+            st.toast(f"✅ Projet **{project_name}** chargé (compressed version)")
+        except zlib.error:
+            # If decompression fails, fallback to direct pickle
+            loaded_state = pickle.loads(decoded_bytes)
+            st.toast(f"✅ Projet **{project_name}** chargé (uncompressed version)")
 
         # 4. Restore session state
         for key, value in loaded_state.items():
             st.session_state[key] = value
 
-        st.toast(f"Projet **{project_name}** chargé avec succès ✅")
         st.rerun()
         return True
 
