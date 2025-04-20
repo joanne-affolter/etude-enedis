@@ -293,6 +293,22 @@ def load_state_from_supabase(project_name):
         for i, val in enumerate(loaded_state.get("puissance_irve", [])):
             st.session_state[f"puissance_irve_{i}"] = val
 
+        # Now dates,
+        for date_field in [
+            "date_saisie",
+            "date_construction_immeuble",
+            "date_visite_technique",
+            "date_ag",
+            "date_debut_chantier",
+            "date_fin_chantier",
+        ]:
+            if loaded_state.get(date_field) and isinstance(
+                loaded_state[date_field], str
+            ):
+                loaded_state[date_field] = datetime.datetime.strptime(
+                    loaded_state[date_field], "%Y-%m-%d"
+                ).date()
+
         st.toast(f"✅ Projet **{project_name}** chargé avec succès.")
         st.rerun()
 
@@ -396,6 +412,24 @@ def init_state():
             "Synoptique": {},
             "Calcul de colonne électrique": {},
         },
+        # Matériel
+        "materiel_interieur_raccordement_au_reseau": [],
+        "materiel_adaptation_pied_de_colonne": [],
+        "materiel_construction_ouvrages_collectifs": [],
+        "materiel_construction_travee": [],
+        "materiel_creation_di": [],
+        "materiel_cables_et_accessoires": [],
+        "materiel_travaux_annexes": [],
+        "materiel_travaux_annexes_ext": [],
+        "materiel_raccordement": [],
+        "materiel_derivation_collective": [],
+        "materiel_derivation_collective_exterieur": [],
+        "materiel_di_coffret_exploitation": [],
+        "materiel_di_mur_exterieur": [],
+        "materiel_di_parking_sol": [],
+        "materiel_extension_reseau": [],
+        "materiel_autres": [],
+        "materiel_autres_ext": [],
     }
     for key, value in defaults.items():
         if key not in st.session_state:
