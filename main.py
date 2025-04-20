@@ -634,6 +634,13 @@ def section_images():
     st.header("Images à fournir")
 
     st.markdown("#### Etat avant Travaux")
+
+    if (
+        "etats_avant_travaux" not in st.session_state
+        or st.session_state.etats_avant_travaux is None
+    ):
+        st.session_state.etats_avant_travaux = {}
+
     uploaded_file_arrivee_reseau = st.file_uploader(
         "Arrivée réseau",
         type=["png", "jpg", "jpeg"],
@@ -735,9 +742,9 @@ def section_prefinancement():
 
     for i, texte in enumerate(descriptifs):
         checked = st.checkbox(
-            texte, 
+            texte,
             key=f"pref_check_{i}",
-            value=texte in st.session_state.prefinancement_enedis  # 👈 rajoute ça
+            value=texte in st.session_state.prefinancement_enedis,  # 👈 rajoute ça
         )
 
         if checked and texte not in st.session_state.prefinancement_enedis:
