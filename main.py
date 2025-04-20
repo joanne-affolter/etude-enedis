@@ -36,31 +36,9 @@ from helpers import (
 )
 
 
-def save_state(project_name: str) -> bool:
-    dir_path = "Streamlit_app/saved_states"
-    os.makedirs(dir_path, exist_ok=True)
-
-    filepath = os.path.join(dir_path, f"{project_name}.pkl")
-
-    with open(filepath, "wb") as f:
-        pickle.dump(dict(st.session_state), f)
-
-    return True
-
-
-def list_saved_states_old():
-    path = "Streamlit_app/saved_states"
-    if not os.path.exists(path):
-        os.makedirs(path)
-        return []
-
-    files = [f.replace(".pkl", "") for f in os.listdir(path) if f.endswith(".pkl")]
-    return files
-
-
 def list_saved_states():
     conn = st.connection("supabase", type=SupabaseConnection)
-    result = conn.client.table("projects_state").select("project_name").execute()
+    result = conn.client.table("projects_state2").select("project_name").execute()
     if result.data:
         project_names = []
 
@@ -70,28 +48,6 @@ def list_saved_states():
 
         return project_names
     return []
-
-
-def load_state(project_name: str) -> bool:
-    filepath = f"Streamlit_app/saved_states/{project_name}.pkl"
-    if not os.path.exists(filepath):
-        st.sidebar.error(f"Aucun projet trouvé avec le nom **{project_name}** ❌")
-        return False
-
-    with open(filepath, "rb") as f:
-        saved_state = pickle.load(f)
-        print(saved_state)
-
-    # Empêche de modifier les clés déjà utilisées dans des widgets
-    forbidden_keys = ["nom_projet_sidebar"]
-
-    for key, value in saved_state.items():
-        if key not in forbidden_keys:
-            st.session_state[key] = value
-
-    st.rerun()  # 🔁 rerun pour forcer les widgets à prendre les valeurs chargées
-
-    return True
 
 
 def save_state_to_supabase(project_name):
@@ -170,7 +126,7 @@ def save_state_to_supabase(project_name):
         "prefinancement_demandeur": st.session_state.prefinancement_demandeur,
     }
 
-    conn.client.table("projects_state").upsert(
+    conn.client.table("projects_state2").upsert(
         data, on_conflict="project_name"
     ).execute()
 
@@ -183,7 +139,7 @@ def load_state_from_supabase(project_name):
 
     try:
         result = (
-            conn.client.table("projects_state")
+            conn.client.table("projects_state2")
             .select("*")
             .eq("project_name", project_name)
             .execute()
@@ -254,7 +210,7 @@ def delete_state_from_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
     try:
         result = (
-            conn.client.table("projects_state")
+            conn.client.table("projects_state2")
             .delete()
             .eq("project_name", project_name)
             .execute()
