@@ -646,6 +646,9 @@ def section_images():
         key="arrivee_reseau_key",
     )
 
+    if "etats_avant_travaux" not in st.session_state:
+        st.session_state.etats_avant_travaux = {}
+
     if "Arrivée réseau" not in st.session_state.etats_avant_travaux:
         st.session_state.etats_avant_travaux["Arrivée réseau"] = []
 
