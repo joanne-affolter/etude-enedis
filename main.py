@@ -371,12 +371,12 @@ def init_state():
         "img_synoptique": {},
         "img_calcul_colonne_electrique": {},
         "sections_dict": {
-            "Paramètres généraux": [],
-            "Arrivée réseau et pied de colonne": [],
-            "Distribution du parking": [],
-            "Plans après travaux": [],
-            "Synoptique": [],
-            "Calcul de colonne électrique": [],
+            "Paramètres généraux": {},
+            "Arrivée réseau et pied de colonne": {},
+            "Distribution du parking": {},
+            "Plans après travaux": {},
+            "Synoptique": {},
+            "Calcul de colonne électrique": {},
         },
     }
     for key, value in defaults.items():
@@ -1140,70 +1140,59 @@ def materiel():
             )
 
 
-def render_image_section(name_bigsection: str, key: str):
-    # Initialiser le dictionnaire des sections si besoin
-    """if "sections_dict" not in st.session_state:
+def render_image_section(name_bigsection: str):
+    # Initialize
+    if "sections_dict" not in st.session_state:
         st.session_state.sections_dict = {}
-
-    # Initialiser la sous-liste de sections pour cette grande section
     if name_bigsection not in st.session_state.sections_dict:
-        st.session_state.sections_dict[name_bigsection] = []
-    """
+        st.session_state.sections_dict[name_bigsection] = {}
+
     st.write("")
     st.write("")
     st.markdown(f"##### 📍 {name_bigsection}")
 
-    # Formulaire pour ajouter une sous-section
+    # Add a sub-section
     with st.form(f"form_{name_bigsection}"):
         new_section_name = st.text_input(
-            "Nom de la nouvelle section", key=f"input_{name_bigsection}"
+            "Nom de la nouvelle sous-section", key=f"input_{name_bigsection}"
         )
         submitted = st.form_submit_button("Ajouter")
         if submitted and new_section_name:
             if new_section_name not in st.session_state.sections_dict[name_bigsection]:
-                st.session_state.sections_dict[name_bigsection].append(new_section_name)
+                st.session_state.sections_dict[name_bigsection][new_section_name] = []
 
-    # Affichage des sous-sections et upload photo
-    for sub in st.session_state.sections_dict[name_bigsection]:
+    # Loop through sub-sections
+    for sub in st.session_state.sections_dict[name_bigsection].keys():
         with st.expander(sub, expanded=False):
-            if sub in st.session_state.sections_dict[name_bigsection]:
-                if st.button(
-                    f"Supprimer la section {sub}",
-                    key=f"delete_sec_{name_bigsection}_{sub}",
-                ):
-                    st.session_state.sections_dict[name_bigsection].remove(sub)
+            if st.button(
+                f"Supprimer la sous-section {sub}",
+                key=f"delete_sec_{name_bigsection}_{sub}",
+            ):
+                del st.session_state.sections_dict[name_bigsection][sub]
+                st.experimental_rerun()
 
             uploaded_files = st.file_uploader(
-                label="",
+                label=f"Importer des images pour {sub}",
                 type=["jpg", "jpeg", "png"],
                 accept_multiple_files=True,
                 key=f"upload_{name_bigsection}_{sub}",
             )
-            # if key in st.session_state and sub in st.session_state[key]:
-            if (
-                key in st.session_state
-                and st.session_state[key]
-                and sub in st.session_state[key]
-            ):
-                if st.button(
-                    f"Supprimer les photos", key=f"delete_{name_bigsection}_{sub}"
-                ):
-                    st.session_state[key][sub] = []
-
-            # Add to session state (with key = new_section_name)
 
             if uploaded_files:
-                if key not in st.session_state or st.session_state[key] is None:
-                    st.session_state[key] = {}
-                st.session_state[key][sub] = uploaded_files
+                st.session_state.sections_dict[name_bigsection][sub] = uploaded_files
 
-            # if key in st.session_state and sub in st.session_state[key]:
             if (
-                key in st.session_state
-                and st.session_state[key]
-                and sub in st.session_state[key]
+                sub in st.session_state.sections_dict[name_bigsection]
+                and st.session_state.sections_dict[name_bigsection][sub]
             ):
-                for img in st.session_state[key][sub]:
+                if st.button(
+                    f"Supprimer les images pour {sub}",
+                    key=f"delete_imgs_{name_bigsection}_{sub}",
+                ):
+                    st.session_state.sections_dict[name_bigsection][sub] = []
+                    st.experimental_rerun()
+
+                for img in st.session_state.sections_dict[name_bigsection][sub]:
                     st.image(img, caption=img.name, width=200)
 
 
