@@ -426,72 +426,48 @@ def section_technique():
 
     st.markdown("#### 📝 Description de la solution technique")
 
-    if "description_technique" not in st.session_state:
-        st.session_state.description_technique = {}
-
     for i in range(int(st.session_state.nombre_parkings)):
-        description_label = f"Parking {i + 1}"
         var_name = f"description_technique_{i}"
 
-        if var_name not in st.session_state.description_technique:
-            st.session_state.description_technique[var_name] = ""
+        if var_name not in st.session_state:
+            st.session_state[var_name] = ""
 
-        desc = st.text_input(
-            f"Description de la solution technique - {description_label}",
-            value=st.session_state.description_technique[var_name],
+        st.text_input(
+            f"Description de la solution technique - Parking {i + 1}",
             key=var_name,
         )
 
-    st.session_state.description_technique[var_name] = desc
-
     st.write("")
-    st.write("")
-
     st.markdown("#### 🚘 Nombre de places par parking")
 
-    if "nb_places" not in st.session_state:
-        st.session_state.nb_places = {}
-
     for i in range(int(st.session_state.nombre_parkings)):
-        label = f"Parking {i + 1}"
-        var_name = f"nb_places_{i}"
+        var_name_places = f"nb_places_{i}"
 
-        if var_name not in st.session_state.nb_places:
-            st.session_state.nb_places[var_name] = 0
+        if var_name_places not in st.session_state:
+            st.session_state[var_name_places] = 0
 
-        nb_places = st.number_input(
-            f"Nombre de places - {label}",
+        st.number_input(
+            f"Nombre de places - Parking {i + 1}",
             min_value=0,
             step=1,
-            value=st.session_state.nb_places[var_name],
-            key=var_name,
+            key=var_name_places,
         )
-
-    st.session_state.nb_places[var_name] = nb_places
 
     st.write("")
-
     st.markdown("#### ⚡️ Puissance IRVE")
 
-    if "puissance_irve" not in st.session_state:
-        st.session_state.puissance_irve = {}
-
     for i in range(int(st.session_state.nombre_parkings)):
-        puissance_irve_label = f"Parking {i + 1}"
-        var_name = f"puissance_irve_{i}"
+        var_name_puissance = f"puissance_irve_{i}"
 
-        if var_name not in st.session_state.puissance_irve:
-            st.session_state.puissance_irve[var_name] = 0
+        if var_name_puissance not in st.session_state:
+            st.session_state[var_name_puissance] = 0
 
-        puissance = st.number_input(
-            f"Puissance IRVE - {puissance_irve_label} (KVA)",
+        st.number_input(
+            f"Puissance IRVE - Parking {i + 1} (KVA)",
             min_value=0,
             step=1,
-            value=st.session_state.puissance_irve[var_name],
-            key=var_name,
+            key=var_name_puissance,
         )
-
-        st.session_state.puissance_irve[var_name] = puissance
 
     st.write("")
     st.write("")
