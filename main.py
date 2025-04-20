@@ -144,6 +144,20 @@ def save_state_to_supabase(project_name):
         # Images
         "etats_avant_travaux": encode_files_dict(st.session_state.etats_avant_travaux),
         "plan_reseau2": encode_files(st.session_state.plan_reseau2),
+        "img_parametres_generaux": encode_files_dict(
+            st.session_state.img_parametres_generaux
+        ),
+        "img_arrivee_reseau": encode_files_dict(st.session_state.img_arrivee_reseau),
+        "img_distribution_parking": encode_files_dict(
+            st.session_state.img_distribution_parking
+        ),
+        "img_plans_apres_travaux": encode_files_dict(
+            st.session_state.img_plans_apres_travaux
+        ),
+        "img_synoptique": encode_files_dict(st.session_state.img_synoptique),
+        "img_calcul_colonne_electrique": encode_files_dict(
+            st.session_state.img_calcul_colonne_electrique
+        ),
     }
 
     conn.client.table("projects_state2").upsert(
@@ -206,6 +220,24 @@ def load_state_from_supabase(project_name):
             loaded_state.get("etats_avant_travaux")
         )
         loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
+        loaded_state["img_parametres_generaux"] = decode_files_dict(
+            loaded_state.get("img_parametres_generaux")
+        )
+        loaded_state["img_arrivee_reseau"] = decode_files_dict(
+            loaded_state.get("img_arrivee_reseau")
+        )
+        loaded_state["img_distribution_parking"] = decode_files_dict(
+            loaded_state.get("img_distribution_parking")
+        )
+        loaded_state["img_plans_apres_travaux"] = decode_files_dict(
+            loaded_state.get("img_plans_apres_travaux")
+        )
+        loaded_state["img_synoptique"] = decode_files_dict(
+            loaded_state.get("img_synoptique")
+        )
+        loaded_state["img_calcul_colonne_electrique"] = decode_files_dict(
+            loaded_state.get("img_calcul_colonne_electrique")
+        )
 
         # Documents Excel
         if loaded_state.get("documents"):
