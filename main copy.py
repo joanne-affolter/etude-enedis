@@ -94,159 +94,99 @@ def load_state(project_name: str) -> bool:
     return True
 
 
-def save_state_to_supabase(project_name):
+MAX_CHUNK_SIZE = 500_000  # 500 KB limit per row (safe for Supabase free tier)
+
+
+def save_state_to_supabase(project_name, chunk_size=50000):
     conn = st.connection("supabase", type=SupabaseConnection)
 
-    update_dynamic_lists_before_saving()
+    try:
+        update_dynamic_lists_before_saving()
+        # ➔ Compress first!
+        pickled_state = pickle.dumps(dict(st.session_state))
+        compressed = zlib.compress(pickled_state)
+        encoded = base64.b64encode(compressed).decode("utf-8")
 
-    import base64
+        # ➔ Split encoded string into chunks
+        chunks = [
+            encoded[i : i + chunk_size] for i in range(0, len(encoded), chunk_size)
+        ]
 
-    def encode_files(files):
-        return (
-            [base64.b64encode(file.read()).decode("utf-8") for file in files]
-            if files
-            else []
+        # ➔ Delete existing rows for this project_name
+        conn.client.table("projects_state").delete().eq(
+            "project_name", project_name
+        ).execute()
+
+        # ➔ Insert new chunks
+        for idx, chunk in enumerate(chunks):
+            conn.client.table("projects_state").insert(
+                {"project_name": project_name, "state": chunk, "part_number": idx}
+            ).execute()
+
+        st.toast(
+            f"Projet **{project_name}** sauvegardé en {len(chunks)} morceau(x) (compressed pickled)"
         )
+        st.rerun()
 
-    data = {
-        "project_name": project_name,
-        # Infos Générales
-        "adresse_site": st.session_state.adresse_site,
-        "num_affaire": st.session_state.num_affaire,
-        "date_saisie": str(st.session_state.date_saisie),
-        "date_construction_immeuble": str(st.session_state.date_construction_immeuble),
-        "avec_sans_prefinancement": st.session_state.avec_sans_prefinancement,
-        "parking_interieur": st.session_state.parking_interieur,
-        "parking_exterieur": st.session_state.parking_exterieur,
-        "nombre_parkings": st.session_state.nombre_parkings,
-        "nombre_de_niveaux": st.session_state.nombre_de_niveaux,
-        "nombre_places_stationnement": st.session_state.nombre_places_stationnement,
-        # Infos Fonctionnelles
-        "date_visite_technique": str(st.session_state.date_visite_technique),
-        "date_ag": str(st.session_state.date_ag),
-        "date_debut_chantier": str(st.session_state.date_debut_chantier),
-        "date_fin_chantier": str(st.session_state.date_fin_chantier),
-        # Contacts
-        "reference_pole_enedis": st.session_state.reference_pole_enedis,
-        "adresse_pole_enedis": st.session_state.adresse_pole_enedis,
-        "nom_charge_projet": st.session_state.nom_charge_projet,
-        "tel_charge_projet": st.session_state.tel_charge_projet,
-        "email_charge_projet": st.session_state.email_charge_projet,
-        "nom_prestataire": st.session_state.nom_prestataire,
-        "tel_prestataire": st.session_state.tel_prestataire,
-        "email_prestataire": st.session_state.email_prestataire,
-        "nom_syndic": st.session_state.nom_syndic,
-        "adresse_syndic": st.session_state.adresse_syndic,
-        "nom_interlocuteur_syndic": st.session_state.nom_interlocuteur_syndic,
-        "tel_syndic": st.session_state.tel_syndic,
-        "email_syndic": st.session_state.email_syndic,
-        # Champs dynamiques regroupés explicitement !
-        "description_technique": [
-            st.session_state.get(f"description_technique_{i}", "")
-            for i in range(st.session_state.nombre_parkings)
-        ],
-        "nb_places": [
-            st.session_state.get(f"nb_places_{i}", 0)
-            for i in range(st.session_state.nombre_parkings)
-        ],
-        "puissance_irve": [
-            st.session_state.get(f"puissance_irve_{i}", 0)
-            for i in range(st.session_state.nombre_parkings)
-        ],
-        # Infos Techniques
-        "type_chauffage": st.session_state.type_chauffage,
-        "coffret": st.session_state.coffret,
-        "plan_reseau": encode_files(st.session_state.plan_reseau),
-        "documents": base64.b64encode(st.session_state.documents.read()).decode("utf-8")
-        if st.session_state.documents
-        else None,
-        # Accès
-        "moyen_acces_copro": st.session_state.moyen_acces_copro,
-        "moyen_acces_parking": st.session_state.moyen_acces_parking,
-        "facade_acces_copro": encode_files(st.session_state.facade_acces_copro),
-        "facade_acces_parking": encode_files(st.session_state.facade_acces_parking),
-        # Préfinancement
-        "prefinancement_enedis": st.session_state.prefinancement_enedis,
-        "prefinancement_demandeur": st.session_state.prefinancement_demandeur,
-    }
+        return True
 
-    conn.client.table("projects_state").upsert(
-        data, on_conflict="project_name"
-    ).execute()
-
-    st.toast(f"✅ Projet **{project_name}** sauvegardé avec succès.")
-    st.rerun()
+    except Exception as e:
+        st.error(f"Erreur lors de la sauvegarde : {e}")
+        return False
 
 
 def load_state_from_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     try:
+        # 1. Fetch all chunks for the project
         result = (
             conn.client.table("projects_state")
-            .select("*")
+            .select("part_number, state")
             .eq("project_name", project_name)
+            .order("part_number", desc=False)
             .execute()
         )
 
         if not result.data:
-            st.error("Projet non trouvé !")
+            st.warning(f"❌ Projet **{project_name}** non trouvé.")
             return False
 
-        loaded_state = result.data[0]
+        # 2. Reconstruct the full encoded string
+        chunks_sorted = sorted(result.data, key=lambda x: x["part_number"])
+        full_encoded = "".join(chunk["state"] for chunk in chunks_sorted)
 
-        import base64
-        from io import BytesIO
+        # 3. Decode from base64
+        decoded_bytes = base64.b64decode(full_encoded)
 
-        def decode_files(encoded_files):
-            return (
-                [BytesIO(base64.b64decode(img)) for img in encoded_files]
-                if encoded_files
-                else []
-            )
+        loaded_state = None
 
-        loaded_state["plan_reseau"] = decode_files(loaded_state.get("plan_reseau"))
-        loaded_state["facade_acces_copro"] = decode_files(
-            loaded_state.get("facade_acces_copro")
-        )
-        loaded_state["facade_acces_parking"] = decode_files(
-            loaded_state.get("facade_acces_parking")
-        )
+        # 4. Try decompress then pickle
+        try:
+            decompressed = zlib.decompress(decoded_bytes)
+            loaded_state = pickle.loads(decompressed)
+            st.toast(f"✅ Projet **{project_name}** chargé (compressed version)")
+        except zlib.error:
+            try:
+                loaded_state = pickle.loads(decoded_bytes)
+                st.toast(f"✅ Projet **{project_name}** chargé (uncompressed version)")
+            except Exception as e:
+                st.error(f"Erreur lors du chargement (pickle error): {e}")
+                return False
 
-        # Documents Excel
-        if loaded_state.get("documents"):
-            loaded_state["documents"] = BytesIO(
-                base64.b64decode(loaded_state["documents"])
-            )
+        if loaded_state is None:
+            st.error("Erreur: Impossible de charger l'état du projet.")
+            return False
 
-        # Restaurer les valeurs simples
+        # 5. Restore session state
         for key, value in loaded_state.items():
-            if key not in [
-                "id",
-                "created_at",
-                "updated_at",
-                "project_name",
-                "nb_places",
-                "puissance_irve",
-                "description_technique",
-            ]:
-                st.session_state[key] = value
+            st.session_state[key] = value
 
-        # Restaurer explicitement les champs dynamiques en variables individuelles
-        for i, val in enumerate(loaded_state.get("description_technique", [])):
-            st.session_state[f"description_technique_{i}"] = val
-
-        for i, val in enumerate(loaded_state.get("nb_places", [])):
-            st.session_state[f"nb_places_{i}"] = val
-
-        for i, val in enumerate(loaded_state.get("puissance_irve", [])):
-            st.session_state[f"puissance_irve_{i}"] = val
-
-        st.toast(f"✅ Projet **{project_name}** chargé avec succès.")
         st.rerun()
+        return True
 
     except Exception as e:
-        st.error(f"Erreur lors du chargement : {e}")
+        st.error(f"Erreur lors du chargement (général): {e}")
         return False
 
 
