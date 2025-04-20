@@ -1075,25 +1075,19 @@ def generation_pdf():
         date_debut_str = st.session_state.date_debut_chantier.strftime("%d/%m/%Y")
         date_fin_str = st.session_state.date_fin_chantier.strftime("%d/%m/%Y")
 
-        # Merge fields from lists
-        puissance_IRVE = (
-            [
-                f"({i + 1}) {str(st.session_state.nb_places[i])} places - {str(st.session_state.puissance_irve[i])} KVA"
-                for i in range(int(st.session_state.nombre_parkings))
-            ]
-            if st.session_state.nb_places
-            else []
-        )
+        # Merge fields from variables
+        puissance_IRVE = [
+            f"({i + 1}) {str(st.session_state.get(f'nb_places_{i}', 0))} places - {str(st.session_state.get(f'puissance_irve_{i}', 0))} KVA"
+            for i in range(int(st.session_state.nombre_parkings))
+        ]
+
         puissance_IRVE_str = " <br> ".join(puissance_IRVE)
 
-        description_technique = (
-            [
-                f"({i + 1}) {st.session_state.description_technique[i]}"
-                for i in range(int(st.session_state.nombre_parkings))
-            ]
-            if st.session_state.description_technique
-            else []
-        )
+        description_technique = [
+            f"({i + 1}) {st.session_state.get(f'description_technique_{i}', '')}"
+            for i in range(int(st.session_state.nombre_parkings))
+        ]
+
         description_technique_str = " <br> ".join(description_technique)
 
         # Create Prefinancement table
