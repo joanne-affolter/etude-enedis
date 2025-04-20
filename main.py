@@ -75,8 +75,6 @@ def save_state_to_supabase(project_name):
             result[niveau] = encoded_files
         return result
 
-    print("HEY", st.session_state.etats_avant_travaux)
-
     data = {
         "project_name": project_name,
         # Infos Générales
