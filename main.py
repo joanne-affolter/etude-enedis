@@ -175,6 +175,8 @@ def load_state_from_supabase(project_name):
             loaded_state.get("facade_acces_parking")
         )
 
+        print("HEEYYYYYYY", loaded_state.get("etats_avant_travaux"))
+
         # NEW
         loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
 
@@ -654,6 +656,7 @@ def section_images():
         or st.session_state.etats_avant_travaux is None
     ):
         st.session_state.etats_avant_travaux = {}
+
     if uploaded_file_arrivee_reseau:
         st.session_state.etats_avant_travaux["Arrivée réseau"] = (
             uploaded_file_arrivee_reseau
@@ -669,8 +672,7 @@ def section_images():
             st.write("")
             st.write("")
 
-    # 2. Autres images
-
+    # 2. Niveau 0
     for i in range(int(st.session_state.nombre_de_niveaux)):
         niveau_label = f"Niveau -{i}" if i > 0 else "Niveau 0"
 
