@@ -90,6 +90,7 @@ def load_state(project_name: str) -> bool:
 
 MAX_CHUNK_SIZE = 500_000  # 500 KB limit per row (safe for Supabase free tier)
 
+
 def save_state_to_supabase(project_name, chunk_size=50000):
     conn = st.connection("supabase", type=SupabaseConnection)
 
@@ -100,27 +101,34 @@ def save_state_to_supabase(project_name, chunk_size=50000):
         encoded = base64.b64encode(compressed).decode("utf-8")
 
         # ➔ Split encoded string into chunks
-        chunks = [encoded[i:i+chunk_size] for i in range(0, len(encoded), chunk_size)]
+        chunks = [
+            encoded[i : i + chunk_size] for i in range(0, len(encoded), chunk_size)
+        ]
 
         # ➔ Delete existing rows for this project_name
-        conn.client.table("projects_state").delete().eq("project_name", project_name).execute()
+        conn.client.table("projects_state").delete().eq(
+            "project_name", project_name
+        ).execute()
 
         # ➔ Insert new chunks
         for idx, chunk in enumerate(chunks):
-            conn.client.table("projects_state").insert({
-                "project_name": project_name,
-                "state": chunk,
-                "part_number": idx
-            }).execute()
+            conn.client.table("projects_state").insert(
+                {"project_name": project_name, "state": chunk, "part_number": idx}
+            ).execute()
 
-        st.toast(f"Projet **{project_name}** sauvegardé en {len(chunks)} morceau(x) (compressed pickled)")
+        st.toast(
+            f"Projet **{project_name}** sauvegardé en {len(chunks)} morceau(x) (compressed pickled)"
+        )
         st.rerun()
 
         return True
 
     except Exception as e:
         st.error(f"Erreur lors de la sauvegarde : {e}")
-        return Falsedef load_state_from_supabase(project_name):
+        return False
+
+
+def load_state_from_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     try:
