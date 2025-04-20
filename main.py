@@ -430,22 +430,21 @@ def section_technique():
 
     st.write("")
     st.write("")
+
     st.markdown("#### 🚘 Nombre de places par parking")
     for i in range(int(st.session_state.nombre_parkings)):
         label = f"Parking {i + 1}"
         var_name = f"nb_places_{i}"
 
-        # Récupération sécurisée de la valeur
-        value = st.session_state.get(var_name, 0)
-        if value in ["", None]:
-            value = 0
+        if var_name not in st.session_state or st.session_state[var_name] in ["", None]:
+            st.session_state[var_name] = 0
 
-        st.session_state[var_name] = st.number_input(
+        st.number_input(
             f"Nombre de places - {label}",
-            value=int(value),
+            value=int(st.session_state[var_name]),
             min_value=0,
             step=1,
-            key=f"nb_places_{i}",
+            key=var_name,
         )
 
     st.write("")
@@ -455,17 +454,15 @@ def section_technique():
         puissance_irve_label = f"Parking {i + 1}"
         var_name = f"puissance_irve_{i}"
 
-        # Récupération sécurisée de la valeur
-        value = st.session_state.get(var_name, 0)
-        if value in ["", None]:
-            value = 0
+        if var_name not in st.session_state or st.session_state[var_name] in ["", None]:
+            st.session_state[var_name] = 0
 
-        st.session_state[var_name] = st.number_input(
+        st.number_input(
             f"Puissance IRVE - {puissance_irve_label} (KVA)",
-            value=int(value),
+            value=int(st.session_state[var_name]),
             min_value=0,
             step=1,
-            key=f"puissance_irve_{i}",
+            key=var_name,
         )
     st.write("")
     st.write("")
