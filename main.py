@@ -88,38 +88,38 @@ def load_state(project_name: str) -> bool:
     return True
 
 
+MAX_CHUNK_SIZE = 500_000  # 500 KB limit per row (safe for Supabase free tier)
+
+
 def save_state_to_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     try:
-        # ➔ Compress first!
+        # 1. Pickle -> Compress -> Base64
         pickled_state = pickle.dumps(dict(st.session_state))
         compressed = zlib.compress(pickled_state)
         encoded = base64.b64encode(compressed).decode("utf-8")
 
-        result = (
-            conn.client.table("projects_state")
-            .select("id")
-            .eq("project_name", project_name)
-            .execute()
-        )
+        # 2. Chunk the encoded string
+        chunks = [
+            encoded[i : i + MAX_CHUNK_SIZE]
+            for i in range(0, len(encoded), MAX_CHUNK_SIZE)
+        ]
 
-        if result.data:
-            conn.client.table("projects_state").update({"state": encoded}).eq(
-                "project_name", project_name
-            ).execute()
-        else:
+        # 3. Delete any old chunks for the project (clean slate)
+        conn.client.table("projects_state").delete().eq(
+            "project_name", project_name
+        ).execute()
+
+        # 4. Insert chunks with part numbers
+        for idx, chunk in enumerate(chunks):
             conn.client.table("projects_state").insert(
-                {"project_name": project_name, "state": encoded}
+                {"project_name": project_name, "part_number": idx, "state": chunk}
             ).execute()
 
-        st.toast(f"Projet **{project_name}** sauvegardé (compressed pickled)")
+        st.toast(f"Projet **{project_name}** sauvegardé ({len(chunks)} chunk(s))")
         st.rerun()
         return True
-
-    except Exception as e:
-        st.error(f"Erreur lors de la sauvegarde : {e}")
-        return False
 
     except Exception as e:
         st.error(f"Erreur lors de la sauvegarde : {e}")
@@ -129,34 +129,39 @@ def save_state_to_supabase(project_name):
 def load_state_from_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
-    result = (
-        conn.client.table("projects_state")
-        .select("state")
-        .eq("project_name", project_name)
-        .execute()
-    )
+    try:
+        # 1. Fetch all chunks for the project
+        result = (
+            conn.client.table("projects_state")
+            .select("part_number, state")
+            .eq("project_name", project_name)
+            .order("part_number", desc=False)
+            .execute()
+        )
 
-    if result.data:
-        try:
-            encoded = result.data[0]["state"]
-            pickled = base64.b64decode(encoded)
-            loaded_state = pickle.loads(pickled)
-
-            print(loaded_state)
-
-            # ⚠️ Important : Écraser les valeurs même si elles existent déjà
-            for key, value in loaded_state.items():
-                st.session_state[key] = value
-
-            st.toast(f"Projet **{project_name}** chargé avec succès ✅")
-            st.rerun()  # pour que les widgets prennent les nouvelles valeurs
-
-            return True
-        except Exception as e:
-            st.error(f"Erreur lors du chargement : {e}")
+        if not result.data:
+            st.warning(f"❌ Projet **{project_name}** non trouvé.")
             return False
-    else:
-        st.warning("❌ Projet non trouvé.")
+
+        # 2. Reconstruct the full encoded string
+        chunks_sorted = sorted(result.data, key=lambda x: x["part_number"])
+        full_encoded = "".join(chunk["state"] for chunk in chunks_sorted)
+
+        # 3. Decode -> Decompress -> Unpickle
+        compressed = base64.b64decode(full_encoded)
+        pickled = zlib.decompress(compressed)
+        loaded_state = pickle.loads(pickled)
+
+        # 4. Restore session state
+        for key, value in loaded_state.items():
+            st.session_state[key] = value
+
+        st.toast(f"Projet **{project_name}** chargé avec succès ✅")
+        st.rerun()
+        return True
+
+    except Exception as e:
+        st.error(f"Erreur lors du chargement : {e}")
         return False
 
 
