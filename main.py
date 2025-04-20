@@ -198,8 +198,6 @@ def load_state_from_supabase(project_name):
             )
 
         def decode_files_dict(encoded_dict):
-            if not encoded_dict:
-                return {}
             from io import BytesIO
 
             decoded = {}
@@ -222,6 +220,7 @@ def load_state_from_supabase(project_name):
             loaded_state.get("etats_avant_travaux")
         )
         loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
+        
         loaded_state["img_parametres_generaux"] = decode_files_dict(
             loaded_state.get("img_parametres_generaux")
         )
