@@ -371,12 +371,12 @@ def init_state():
         "img_synoptique": {},
         "img_calcul_colonne_electrique": {},
         "sections_dict": {
-            "Paramètres généraux": {},
-            "Arrivée réseau et pied de colonne": {},
-            "Distribution du parking": {},
-            "Plans après travaux": {},
-            "Synoptique": {},
-            "Calcul de colonne électrique": {},
+            "Paramètres généraux": [],
+            "Arrivée réseau et pied de colonne": [],
+            "Distribution du parking": [],
+            "Plans après travaux": [],
+            "Synoptique": [],
+            "Calcul de colonne électrique": [],
         },
     }
     for key, value in defaults.items():
