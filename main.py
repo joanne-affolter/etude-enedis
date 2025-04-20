@@ -423,58 +423,75 @@ def section_technique():
 
     st.write("")
     st.write("")
+
     st.markdown("#### 📝 Description de la solution technique")
+
+    if "description_technique" not in st.session_state:
+        st.session_state.description_technique = {}
 
     for i in range(int(st.session_state.nombre_parkings)):
         description_label = f"Parking {i + 1}"
-
         var_name = f"description_technique_{i}"
 
-        # Initialize if missing (important!)
-        if var_name not in st.session_state:
-            st.session_state[var_name] = ""
+        if var_name not in st.session_state.description_technique:
+            st.session_state.description_technique[var_name] = ""
 
-        st.text_input(
+        desc = st.text_input(
             f"Description de la solution technique - {description_label}",
-            value=st.session_state[var_name],
-            key=f"description_technique_{i}",
+            value=st.session_state.description_technique[var_name],
+            key=var_name,
         )
+
+    st.session_state.description_technique[var_name] = desc
 
     st.write("")
     st.write("")
 
     st.markdown("#### 🚘 Nombre de places par parking")
+
+    if "nb_places" not in st.session_state:
+        st.session_state.nb_places = {}
+
     for i in range(int(st.session_state.nombre_parkings)):
         label = f"Parking {i + 1}"
         var_name = f"nb_places_{i}"
 
-        if var_name not in st.session_state or st.session_state[var_name] in ["", None]:
-            st.session_state[var_name] = 0
+        if var_name not in st.session_state.nb_places:
+            st.session_state.nb_places[var_name] = 0
 
-        st.number_input(
+        nb_places = st.number_input(
             f"Nombre de places - {label}",
             min_value=0,
             step=1,
-            key=var_name,  # Pas d'argument value !
+            value=st.session_state.nb_places[var_name],
+            key=var_name,
         )
 
+    st.session_state.nb_places[var_name] = nb_places
+
     st.write("")
+
     st.markdown("#### ⚡️ Puissance IRVE")
+
+    if "puissance_irve" not in st.session_state:
+        st.session_state.puissance_irve = {}
+
     for i in range(int(st.session_state.nombre_parkings)):
         puissance_irve_label = f"Parking {i + 1}"
         var_name = f"puissance_irve_{i}"
 
-        if var_name not in st.session_state or st.session_state[var_name] in ["", None]:
-            st.session_state[var_name] = 0
+        if var_name not in st.session_state.puissance_irve:
+            st.session_state.puissance_irve[var_name] = 0
 
-        (
-            st.number_input(
-                f"Puissance IRVE - {puissance_irve_label} (KVA)",
-                min_value=0,
-                step=1,
-                key=var_name,  # Pas d'argument value ici non plus !
-            ),
+        puissance = st.number_input(
+            f"Puissance IRVE - {puissance_irve_label} (KVA)",
+            min_value=0,
+            step=1,
+            value=st.session_state.puissance_irve[var_name],
+            key=var_name,
         )
+
+        st.session_state.puissance_irve[var_name] = puissance
 
     st.write("")
     st.write("")
