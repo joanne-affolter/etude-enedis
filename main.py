@@ -367,7 +367,7 @@ def section_technique():
     st.write("")
     st.markdown("#### 📷 Photos")
     plan_reseau_upload = st.file_uploader(
-        "Plan Réseau",
+        "Plan Réseau (Avant Travaux)",
         type=["png", "jpg", "jpeg"],
         accept_multiple_files=True,
         key="plan_reseau_key",
