@@ -431,7 +431,6 @@ def section_technique():
 
         x = st.text_input(
             f"Description de la solution technique - Parking {i + 1}",
-            key=var_name,
         )
         if x != "":
             st.session_state[var_name] = x
@@ -449,7 +448,6 @@ def section_technique():
             f"Nombre de places - Parking {i + 1}",
             min_value=0,
             step=1,
-            key=var_name_places,
         )
 
         if x != 0:
@@ -468,7 +466,6 @@ def section_technique():
             f"Puissance IRVE - Parking {i + 1} (KVA)",
             min_value=0,
             step=1,
-            key=var_name_puissance,
         )
 
         if x != 0:
