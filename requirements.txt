@@ -4,4 +4,3 @@ openpyxl
 xhtml2pdf
 reportlab
 st-supabase-connection
-zlib
