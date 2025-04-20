@@ -793,7 +793,7 @@ def insert_image_to_fields(file_or_files, placeholder, alt_text, fields):
     images_html = ""
     for file in file_or_files:
         image_base64 = base64.b64encode(file.read()).decode("utf-8")
-        mime_type = file.type
+        mime_type = getattr(file, "type", "image/jpeg")
         images_html += (
             f'<div style="display: flex; justify-content: center; margin-bottom: 10px;">'
             f'<img src="data:{mime_type};base64,{image_base64}" '
@@ -818,7 +818,7 @@ def insert_images_to_fields(etats_dict, placeholder, alt_text, fields):
             html_output += f"<div><strong>{niveau_label}</strong></div>"
             for file in files:
                 image_base64 = base64.b64encode(file.read()).decode("utf-8")
-                mime_type = file.type
+                mime_type = getattr(file, "type", "image/jpeg")
                 html_output += f'''
                     <div style="display: flex; justify-content: center; margin-bottom: 10px;">
                         <img src="data:{mime_type};base64,{image_base64}" 
@@ -843,7 +843,7 @@ def insert_images_to_fields_titles(etats_dict, placeholder, alt_text, fields):
             html_output += f"<h4>{niveau_label}</h4>"
             for file in files:
                 image_base64 = base64.b64encode(file.read()).decode("utf-8")
-                mime_type = file.type
+                mime_type = getattr(file, "type", "image/jpeg")
                 html_output += f'''
                     <div style="display: flex; justify-content: center; margin-bottom: 10px;">
                         <img src="data:{mime_type};base64,{image_base64}" 
