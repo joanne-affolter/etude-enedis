@@ -813,14 +813,12 @@ def section_images():
             st.write("")
             st.write("")
 
-    render_image_section("Paramètres généraux", "img_parametres_generaux")
-    render_image_section("Arrivée réseau et pied de colonne", "img_arrivee_reseau")
-    render_image_section("Distribution du parking", "img_distribution_parking")
-    render_image_section("Plans après travaux", "img_plans_apres_travaux")
-    render_image_section("Synoptique", "img_synoptique")
-    render_image_section(
-        "Calcul de colonne électrique", "img_calcul_colonne_electrique"
-    )
+    render_image_section("Paramètres généraux")
+    render_image_section("Arrivée réseau et pied de colonne")
+    render_image_section("Distribution du parking")
+    render_image_section("Plans après travaux")
+    render_image_section("Synoptique")
+    render_image_section("Calcul de colonne électrique")
 
 
 def section_prefinancement():
