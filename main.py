@@ -90,43 +90,37 @@ def load_state(project_name: str) -> bool:
 
 MAX_CHUNK_SIZE = 500_000  # 500 KB limit per row (safe for Supabase free tier)
 
-
-def save_state_to_supabase(project_name):
+def save_state_to_supabase(project_name, chunk_size=50000):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     try:
-        # 1. Pickle -> Compress -> Base64
+        # ➔ Compress first!
         pickled_state = pickle.dumps(dict(st.session_state))
         compressed = zlib.compress(pickled_state)
         encoded = base64.b64encode(compressed).decode("utf-8")
 
-        # 2. Chunk the encoded string
-        chunks = [
-            encoded[i : i + MAX_CHUNK_SIZE]
-            for i in range(0, len(encoded), MAX_CHUNK_SIZE)
-        ]
+        # ➔ Split encoded string into chunks
+        chunks = [encoded[i:i+chunk_size] for i in range(0, len(encoded), chunk_size)]
 
-        # 3. Delete any old chunks for the project (clean slate)
-        conn.client.table("projects_state").delete().eq(
-            "project_name", project_name
-        ).execute()
+        # ➔ Delete existing rows for this project_name
+        conn.client.table("projects_state").delete().eq("project_name", project_name).execute()
 
-        # 4. Insert chunks with part numbers
+        # ➔ Insert new chunks
         for idx, chunk in enumerate(chunks):
-            conn.client.table("projects_state").insert(
-                {"project_name": project_name, "part_number": idx, "state": chunk}
-            ).execute()
+            conn.client.table("projects_state").insert({
+                "project_name": project_name,
+                "state": chunk,
+                "part_number": idx
+            }).execute()
 
-        st.toast(f"Projet **{project_name}** sauvegardé ({len(chunks)} chunk(s))")
+        st.toast(f"Projet **{project_name}** sauvegardé en {len(chunks)} morceau(x) (compressed pickled)")
         st.rerun()
+
         return True
 
     except Exception as e:
         st.error(f"Erreur lors de la sauvegarde : {e}")
-        return False
-
-
-def load_state_from_supabase(project_name):
+        return Falsedef load_state_from_supabase(project_name):
     conn = st.connection("supabase", type=SupabaseConnection)
 
     try:
