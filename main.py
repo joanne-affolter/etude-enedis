@@ -734,7 +734,11 @@ def section_prefinancement():
         st.session_state.prefinancement_enedis = []
 
     for i, texte in enumerate(descriptifs):
-        checked = st.checkbox(texte, key=f"pref_check_{i}")
+        checked = st.checkbox(
+            texte, 
+            key=f"pref_check_{i}",
+            value=texte in st.session_state.prefinancement_enedis  # 👈 rajoute ça
+        )
 
         if checked and texte not in st.session_state.prefinancement_enedis:
             st.session_state.prefinancement_enedis.append(texte)
