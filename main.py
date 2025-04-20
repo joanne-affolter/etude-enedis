@@ -1396,36 +1396,6 @@ def main():
 
 def main():
     init_state()
-
-    # Charger l'état AVANT de créer les widgets
-    if "loaded_project" not in st.session_state:
-        st.session_state.loaded_project = False
-
-    st.sidebar.markdown("### Charger un document")
-
-    saved_projects = list_saved_states()
-
-    if saved_projects:
-        selected_project = st.sidebar.selectbox("Projets disponibles :", saved_projects)
-
-        if st.sidebar.button("Charger"):
-            success = load_state_from_supabase(selected_project)
-            if success:
-                st.session_state.loaded_project = True
-                st.experimental_rerun()
-
-        if st.sidebar.button("Supprimer"):
-            delete_state_from_supabase(selected_project)
-            st.experimental_rerun()
-
-    else:
-        st.sidebar.write("Aucun état sauvegardé pour le moment.")
-
-    if not st.session_state.loaded_project:
-        st.info("⬅️ Veuillez charger un projet avant de commencer.")
-        st.stop()  # Empêche d'initialiser les widgets tant que l'état n'est pas chargé.
-
-    # Widgets principaux (une fois l'état chargé)
     section = st.radio(
         "Choisissez une section :",
         (
@@ -1457,11 +1427,31 @@ def main():
     elif section == "Matériel":
         materiel()
 
-    # Sauvegarder un état
+    st.sidebar.markdown("### Charger un document")
+
+    saved_projects = list_saved_states()
+
+    if saved_projects:
+        selected_project = st.sidebar.selectbox("Projets disponibles :", saved_projects)
+
+        if st.sidebar.button("Charger"):
+            # load_state(selected_project)
+            load_state_from_supabase(selected_project)
+
+        if st.sidebar.button("Supprimer"):
+            # delete_state(selected_project)
+            delete_state_from_supabase(selected_project)
+
+    else:
+        st.sidebar.write("Aucun état sauvegardé pour le moment.")
+
     st.sidebar.markdown("### Sauvegarder un document")
-    project_name = st.sidebar.text_input("Nom du projet", key="nom_projet_sidebar")
+    project_name = st.sidebar.text_input(
+        "Nom du projet", value="", key="nom_projet_sidebar"
+    )
 
     if st.sidebar.button("Sauvegarder"):
+        # success = save_state(project_name)
         success = save_state_to_supabase(project_name)
         if success:
             st.sidebar.success(f"Projet **{project_name}** sauvegardé avec succès ✅")
@@ -1469,7 +1459,7 @@ def main():
     # 📄 Génération du PDF
     st.sidebar.markdown("### Exporter en PDF")
     if st.sidebar.button("Exporter"):
-        pdf = generation_pdf()
+        pdf = generation_pdf()  # cette fonction doit RETURN le pdf
 
         if pdf:
             st.session_state.generated_pdf = pdf
@@ -1477,7 +1467,7 @@ def main():
         else:
             st.sidebar.error("⚠️ Erreur lors de la génération du PDF.")
 
-    # Bouton de téléchargement PDF
+    # Afficher le bouton de téléchargement uniquement si le PDF a été généré
     if "generated_pdf" in st.session_state:
         st.sidebar.download_button(
             label="📥 Télécharger le PDF",
@@ -1486,14 +1476,13 @@ def main():
             mime="application/pdf",
         )
 
-    # Réinitialiser l'état
+    # réinitialiser le state
     st.sidebar.markdown("### Réinitialiser le formulaire")
     if st.sidebar.button("Réinitialiser"):
-        for key in list(st.session_state.keys()):
-            if key not in ["generated_pdf", "nom_projet_sidebar", "loaded_project"]:
+        for key in st.session_state.keys():
+            if key not in ["generated_pdf", "nom_projet_sidebar"]:
                 del st.session_state[key]
-        st.session_state.loaded_project = False
-        st.experimental_rerun()
+        st.rerun()
 
 
 if __name__ == "__main__":
