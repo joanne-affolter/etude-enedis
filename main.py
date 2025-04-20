@@ -180,6 +180,18 @@ def load_state_from_supabase(project_name):
                 else []
             )
 
+        def decode_files_dict(encoded_dict):
+            if not encoded_dict:
+                return {}
+            from io import BytesIO
+
+            decoded = {}
+            for key, encoded_list in encoded_dict.items():
+                decoded[key] = [
+                    BytesIO(base64.b64decode(file)) for file in encoded_list
+                ]
+            return decoded
+
         loaded_state["plan_reseau"] = decode_files(loaded_state.get("plan_reseau"))
         loaded_state["facade_acces_copro"] = decode_files(
             loaded_state.get("facade_acces_copro")
@@ -189,6 +201,9 @@ def load_state_from_supabase(project_name):
         )
 
         # NEW
+        loaded_state["etats_avant_travaux"] = decode_files_dict(
+            loaded_state.get("etats_avant_travaux")
+        )
         loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
 
         # Documents Excel
