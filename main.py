@@ -400,7 +400,7 @@ def section_technique():
         st.text_input(
             f"Description de la solution technique - {description_label}",
             value=st.session_state[var_name],
-            key=f"description_{i}",
+            key=f"description_technique_{i}",
         )
 
     st.write("")
