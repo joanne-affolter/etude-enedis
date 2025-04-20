@@ -1469,7 +1469,7 @@ def main():
             load_success = load_state_from_supabase(selected_project)
             if load_success:
                 st.session_state.load_done = True
-                st.experimental_rerun()
+                st.rerun()
 
         st.stop()  # ⛔️ STOP la page ici tant que pas chargé
 
