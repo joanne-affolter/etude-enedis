@@ -97,18 +97,15 @@ def save_state_to_supabase(project_name):
         "tel_syndic": st.session_state.tel_syndic,
         "email_syndic": st.session_state.email_syndic,
         # Champs dynamiques regroupés explicitement !
-        "description_technique": [
-            st.session_state.get(f"description_technique_{i}", "")
-            for i in range(st.session_state.nombre_parkings)
-        ],
-        "nb_places": [
-            st.session_state.get(f"nb_places_{i}", 0)
-            for i in range(st.session_state.nombre_parkings)
-        ],
-        "puissance_irve": [
-            st.session_state.get(f"puissance_irve_{i}", 0)
-            for i in range(st.session_state.nombre_parkings)
-        ],
+        "description_technique_0": st.session_state.get("description_technique_0", ""),
+        "description_technique_1": st.session_state.get("description_technique_1", ""),
+        "description_technique_2": st.session_state.get("description_technique_2", ""),
+        "nb_places_0": st.session_state.get("nb_places_0", 0),
+        "nb_places_1": st.session_state.get("nb_places_1", 0),
+        "nb_places_2": st.session_state.get("nb_places_2", 0),
+        "puissance_irve_0": st.session_state.get("puissance_irve_0", 0),
+        "puissance_irve_1": st.session_state.get("puissance_irve_1", 0),
+        "puissance_irve_2": st.session_state.get("puissance_irve_2", 0),
         # Infos Techniques
         "type_chauffage": st.session_state.type_chauffage,
         "coffret": st.session_state.coffret,
