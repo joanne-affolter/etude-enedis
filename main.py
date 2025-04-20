@@ -247,22 +247,20 @@ def load_state_from_supabase(project_name):
 
         loaded_state["sections_dict"] = {
             "Paramètres généraux": decode_files_dict(
-                loaded_state["sections_dict"].get("Paramètres généraux")
+                loaded_state.get("img_parametres_generaux", {})
             ),
             "Arrivée réseau et pied de colonne": decode_files_dict(
-                loaded_state["sections_dict"].get("Arrivée réseau et pied de colonne")
+                loaded_state.get("img_arrivee_reseau", {})
             ),
             "Distribution du parking": decode_files_dict(
-                loaded_state["sections_dict"].get("Distribution du parking")
+                loaded_state.get("img_distribution_parking", {})
             ),
             "Plans après travaux": decode_files_dict(
-                loaded_state["sections_dict"].get("Plans après travaux")
+                loaded_state.get("img_plans_apres_travaux", {})
             ),
-            "Synoptique": decode_files_dict(
-                loaded_state["sections_dict"].get("Synoptique")
-            ),
+            "Synoptique": decode_files_dict(loaded_state.get("img_synoptique", {})),
             "Calcul de colonne électrique": decode_files_dict(
-                loaded_state["sections_dict"].get("Calcul de colonne électrique")
+                loaded_state.get("img_calcul_colonne_electrique", {})
             ),
         }
 
