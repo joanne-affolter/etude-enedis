@@ -6,6 +6,8 @@ import json
 import base64
 import zlib
 
+import datetime
+
 st.set_page_config(layout="wide", page_title="Étude ENEDIS")
 
 import datetime
