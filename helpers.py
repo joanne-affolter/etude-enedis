@@ -804,7 +804,7 @@ def insert_image_to_fields(file_or_files, placeholder, alt_text, fields):
     fields[placeholder] = images_html
 
 
-def insert_images_to_fields(etats_dict, placeholder, alt_text, fields):
+def insert_images_to_fields_old(etats_dict, placeholder, alt_text, fields):
     """
     Insère un dictionnaire {niveau_label: [list of files]} dans le champ HTML.
     """
@@ -829,7 +829,37 @@ def insert_images_to_fields(etats_dict, placeholder, alt_text, fields):
     fields[placeholder] = html_output
 
 
-def insert_images_to_fields_titles(etats_dict, placeholder, alt_text, fields):
+def insert_images_to_fields(images_dict, placeholder, niveau_label, fields):
+    if not images_dict:
+        fields[placeholder] = ""
+        return
+
+    html_output = ""
+
+    for niveau, files in images_dict.items():
+        html_output += f"<div><strong>{niveau_label} - {niveau}</strong></div><br>"
+
+        for file in files:
+            if isinstance(file, str):
+                # Cas spécial: base64 déjà prêt
+                image_base64 = file
+                mime_type = "image/jpeg"
+            else:
+                file.seek(0)
+                image_base64 = base64.b64encode(file.read()).decode("utf-8")
+                mime_type = getattr(file, "type", "image/jpeg")
+
+            html_output += f"""
+                <div style="display: flex; justify-content: center;">
+                    <img src="data:{mime_type};base64,{image_base64}" width="400">
+                </div>
+                <br>
+            """
+
+    fields[placeholder] = html_output
+
+
+def insert_images_to_fields_titles_old(etats_dict, placeholder, alt_text, fields):
     """
     Insère un dictionnaire {niveau_label: [list of files]} dans le champ HTML.
     """
@@ -851,6 +881,35 @@ def insert_images_to_fields_titles(etats_dict, placeholder, alt_text, fields):
                              style="display: block; width:500px; max-width: 70%; align: center; margin: 0 auto;" />
                     </div>
                 '''
+    fields[placeholder] = html_output
+
+
+def insert_images_to_fields_titles(images_dict, placeholder, niveau_label, fields):
+    if not images_dict:
+        fields[placeholder] = ""
+        return
+
+    html_output = ""
+
+    for title, files in images_dict.items():
+        if files:
+            html_output += f"<h4>{niveau_label} - {title}</h4>"
+            for file in files:
+                if isinstance(file, str):
+                    image_base64 = file
+                    mime_type = "image/jpeg"
+                else:
+                    file.seek(0)
+                    image_base64 = base64.b64encode(file.read()).decode("utf-8")
+                    mime_type = getattr(file, "type", "image/jpeg")
+
+                html_output += f"""
+                    <div style="display: flex; justify-content: center;">
+                        <img src="data:{mime_type};base64,{image_base64}" width="400">
+                    </div>
+                    <br>
+                """
+
     fields[placeholder] = html_output
 
 
