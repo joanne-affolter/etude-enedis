@@ -143,6 +143,7 @@ def save_state_to_supabase(project_name):
         "prefinancement_demandeur": st.session_state.prefinancement_demandeur,
         # Images
         "etats_avant_travaux": encode_files_dict(st.session_state.etats_avant_travaux),
+        "plan_reseau2": encode_files(st.session_state.plan_reseau2),
     }
 
     conn.client.table("projects_state2").upsert(
@@ -726,6 +727,7 @@ def section_images():
     st.write("")
     st.markdown("#### Etat après Travaux")
 
+    # 3. Plan réseau
     st.markdown(f"##### 📍 Plan Réseau")
     plan_reseau_upload2 = st.file_uploader(
         "",
@@ -1130,7 +1132,12 @@ def render_image_section(name_bigsection: str, key: str):
                 accept_multiple_files=True,
                 key=f"upload_{name_bigsection}_{sub}",
             )
-            if key in st.session_state and sub in st.session_state[key]:
+            # if key in st.session_state and sub in st.session_state[key]:
+            if (
+                key in st.session_state
+                and st.session_state[key]
+                and sub in st.session_state[key]
+            ):
                 if st.button(
                     f"Supprimer les photos", key=f"delete_{name_bigsection}_{sub}"
                 ):
