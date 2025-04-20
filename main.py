@@ -146,20 +146,14 @@ def save_state_to_supabase(project_name):
         # Images
         "etats_avant_travaux": encode_files_dict(st.session_state.etats_avant_travaux),
         "plan_reseau2": encode_files(st.session_state.plan_reseau2),
-        "img_parametres_generaux": encode_files_dict(
-            st.session_state.img_parametres_generaux
-        ),
-        "img_arrivee_reseau": encode_files_dict(st.session_state.img_arrivee_reseau),
-        "img_distribution_parking": encode_files_dict(
-            st.session_state.img_distribution_parking
-        ),
-        "img_plans_apres_travaux": encode_files_dict(
-            st.session_state.img_plans_apres_travaux
-        ),
-        "img_synoptique": encode_files_dict(st.session_state.img_synoptique),
-        "img_calcul_colonne_electrique": encode_files_dict(
-            st.session_state.img_calcul_colonne_electrique
-        ),
+        "sections_dict": {
+            "Paramètres généraux": st.session_state.img_parametres_generaux,
+            "Arrivée réseau et pied de colonne": st.session_state.img_arrivee_reseau,
+            "Distribution du parking": st.session_state.img_distribution_parking,
+            "Plans après travaux": st.session_state.img_plans_apres_travaux,
+            "Synoptique": st.session_state.img_synoptique,
+            "Calcul de colonne électrique": st.session_state.img_calcul_colonne_electrique,
+        },
     }
 
     conn.client.table("projects_state2").upsert(
@@ -220,7 +214,7 @@ def load_state_from_supabase(project_name):
             loaded_state.get("etats_avant_travaux")
         )
         loaded_state["plan_reseau2"] = decode_files(loaded_state.get("plan_reseau2"))
-        
+
         loaded_state["img_parametres_generaux"] = decode_files_dict(
             loaded_state.get("img_parametres_generaux")
         )
@@ -364,6 +358,14 @@ def init_state():
         "img_plans_apres_travaux": {},
         "img_synoptique": {},
         "img_calcul_colonne_electrique": {},
+        "sections_dict": {
+            "Paramètres généraux": {},
+            "Arrivée réseau et pied de colonne": {},
+            "Distribution du parking": {},
+            "Plans après travaux": {},
+            "Synoptique": {},
+            "Calcul de colonne électrique": {},
+        },
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -1128,13 +1130,13 @@ def materiel():
 
 def render_image_section(name_bigsection: str, key: str):
     # Initialiser le dictionnaire des sections si besoin
-    if "sections_dict" not in st.session_state:
+    """if "sections_dict" not in st.session_state:
         st.session_state.sections_dict = {}
 
     # Initialiser la sous-liste de sections pour cette grande section
     if name_bigsection not in st.session_state.sections_dict:
         st.session_state.sections_dict[name_bigsection] = []
-
+    """
     st.write("")
     st.write("")
     st.markdown(f"##### 📍 {name_bigsection}")
