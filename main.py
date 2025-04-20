@@ -66,6 +66,8 @@ def save_state_to_supabase(project_name):
 
     def encode_files_dict(etats_dict):
         result = {}
+        if not etats_dict:
+            return {}
         for niveau, files in etats_dict.items():
             encoded_files = []
             for file in files:
