@@ -62,8 +62,12 @@ def list_saved_states():
     conn = st.connection("supabase", type=SupabaseConnection)
     result = conn.client.table("projects_state").select("project_name").execute()
     if result.data:
-        # Utiliser set() pour enlever les doublons, puis trier
-        project_names = sorted(set(row["project_name"] for row in result.data))
+        project_names = []
+
+        for row in result.data:
+            if row["project_name"] not in project_names:
+                project_names.append(row["project_name"])
+
         return project_names
     return []
 
