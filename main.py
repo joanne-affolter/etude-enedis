@@ -441,13 +441,11 @@ def section_technique():
 
         st.number_input(
             f"Nombre de places - {label}",
-            value=int(st.session_state[var_name]),
             min_value=0,
             step=1,
-            key=var_name,
+            key=var_name,  # Pas d'argument value !
         )
 
-    st.write("")
     st.write("")
     st.markdown("#### ⚡️ Puissance IRVE")
     for i in range(int(st.session_state.nombre_parkings)):
@@ -457,13 +455,15 @@ def section_technique():
         if var_name not in st.session_state or st.session_state[var_name] in ["", None]:
             st.session_state[var_name] = 0
 
-        st.number_input(
-            f"Puissance IRVE - {puissance_irve_label} (KVA)",
-            value=int(st.session_state[var_name]),
-            min_value=0,
-            step=1,
-            key=var_name,
+        (
+            st.number_input(
+                f"Puissance IRVE - {puissance_irve_label} (KVA)",
+                min_value=0,
+                step=1,
+                key=var_name,  # Pas d'argument value ici non plus !
+            ),
         )
+
     st.write("")
     st.write("")
     st.markdown("#### 📷 Photos")
