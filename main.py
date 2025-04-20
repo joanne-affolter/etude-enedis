@@ -185,6 +185,47 @@ def save_state_to_supabase(project_name):
             "img_calcul_colonne_electrique": encode_files_dict(
                 st.session_state.sections_dict["Calcul de colonne électrique"]
             ),
+            # Matériel
+            "materiel_interieur_raccordement_au_reseau": json.dumps(
+                st.session_state.materiel_interieur_raccordement_au_reseau
+            ),
+            "materiel_interieur_adaptation_pied_de_colonne": json.dumps(
+                st.session_state.materiel_interieur_adaptation_pied_de_colonne
+            ),
+            "materiel_interieur_construction_ouvrages": json.dumps(
+                st.session_state.materiel_interieur_construction_ouvrages
+            ),
+            "materiel_construction_travee": json.dumps(
+                st.session_state.materiel_construction_travee
+            ),
+            "materiel_creation_di": json.dumps(st.session_state.materiel_creation_di),
+            "materiel_cables_et_accessoires": json.dumps(
+                st.session_state.materiel_cables_et_accessoires
+            ),
+            "materiel_travaux_annexes": json.dumps(
+                st.session_state.materiel_travaux_annexes
+            ),
+            "extension_reseau": json.dumps(st.session_state.extension_reseau),
+            "materiel_raccordement": json.dumps(st.session_state.materiel_raccordement),
+            "materiel_derivation_collective": json.dumps(
+                st.session_state.materiel_derivation_collective
+            ),
+            "materiel_derivation_parking_exterieur": json.dumps(
+                st.session_state.materiel_derivation_parking_exterieur
+            ),
+            "materiel_di_coffret_exploitation": json.dumps(
+                st.session_state.materiel_di_coffret_exploitation
+            ),
+            "materiel_travaux_annexes_ext": json.dumps(
+                st.session_state.materiel_travaux_annexes_ext
+            ),
+            "materiel_di_box_ferme": json.dumps(st.session_state.materiel_di_box_ferme),
+            "materiel_di_mur_exterieur": json.dumps(
+                st.session_state.materiel_di_mur_exterieur
+            ),
+            "materiel_di_parking_sol": json.dumps(
+                st.session_state.materiel_di_parking_sol
+            ),
         },
     )
 
@@ -311,6 +352,29 @@ def load_state_from_supabase(project_name):
 
         for i, val in enumerate(loaded_state.get("puissance_irve", [])):
             st.session_state[f"puissance_irve_{i}"] = val
+
+        material_fields = [
+            "materiel_interieur_raccordement_au_reseau",
+            "materiel_interieur_adaptation_pied_de_colonne",
+            "materiel_interieur_construction_ouvrages",
+            "materiel_construction_travee",
+            "materiel_creation_di",
+            "materiel_cables_et_accessoires",
+            "materiel_travaux_annexes",
+            "extension_reseau",
+            "materiel_raccordement",
+            "materiel_derivation_collective",
+            "materiel_derivation_parking_exterieur",
+            "materiel_di_coffret_exploitation",
+            "materiel_travaux_annexes_ext",
+            "materiel_di_box_ferme",
+            "materiel_di_mur_exterieur",
+            "materiel_di_parking_sol",
+        ]
+
+        for field in material_fields:
+            if loaded_state.get(field):
+                st.session_state[field] = json.loads(loaded_state[field])
 
         st.toast(f"✅ Projet **{project_name}** chargé avec succès.")
         st.rerun()
@@ -1287,7 +1351,6 @@ def generation_pdf():
         )
 
         # Create materiel table
-        """
         material_parking_interieur = ""
         material_parking_exterieur = ""
 
@@ -1362,8 +1425,6 @@ def generation_pdf():
             "materiel_di_parking_sol",
         )
 
-        """
-
         # Process xlsx file
         excel_file = st.session_state.documents
         if excel_file:
@@ -1414,10 +1475,10 @@ def generation_pdf():
             "{PREFINANCEMENT_ENEDIS}": prefinancement_enedis,
             "{PREFINANCEMENT_DEMANDEUR}": prefinancement_demandeur,
             # Matériel
-            # "{MATERIEL_PARKING_INTERIEUR}": material_parking_interieur,
-            # "{MATERIEL_PARKING_EXTERIEUR}": material_parking_exterieur,
-            "{MATERIEL_PARKING_INTERIEUR}": "",
-            "{MATERIEL_PARKING_EXTERIEUR}": "",
+            "{MATERIEL_PARKING_INTERIEUR}": material_parking_interieur,
+            "{MATERIEL_PARKING_EXTERIEUR}": material_parking_exterieur,
+            # "{MATERIEL_PARKING_INTERIEUR}": "",
+            # "{MATERIEL_PARKING_EXTERIEUR}": "",
         }
 
         insert_image_to_fields(
