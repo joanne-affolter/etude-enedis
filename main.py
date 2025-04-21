@@ -263,7 +263,7 @@ def load_state_from_supabase(project_name):
             result = []
             for img in encoded_files:
                 file = BytesIO(base64.b64decode(img))
-                file.seek(0)  # 🔥 remet le curseur au début
+                # file.seek(0)  # 🔥 remet le curseur au début
                 result.append(file)
             return result
 
