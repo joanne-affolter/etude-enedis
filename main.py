@@ -60,11 +60,14 @@ def save_state_to_supabase(project_name):
     import base64
 
     def encode_files(files):
-        return (
-            [base64.b64encode(file.read()).decode("utf-8") for file in files]
-            if files
-            else []
-        )
+        encoded_files = []
+        for file in files:
+            # ⚡ IMPORTANT: remettre le curseur au début
+            file.seek(0)
+            # Encode each file to base64
+            encoded_files.append(base64.b64encode(file.read()).decode("utf-8"))
+
+        return encoded_files
 
     def encode_files_dict(etats_dict):
         result = {}
