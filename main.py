@@ -813,9 +813,12 @@ def section_acces():
 
     if len(st.session_state.facade_acces_copro) > 0:
         for img in st.session_state["facade_acces_copro"]:
-            st.image(img, width=200)
-            st.write("")
-            st.write("")
+            img.seek(0)
+            if img.read():  # ✅ si le fichier n'est pas vide
+                img.seek(0)  # 🔥 remets le curseur au début pour afficher
+                st.image(img, width=200)
+                st.write("")
+                st.write("")
 
     parking_upload = st.file_uploader(
         "Façade et accès parking",
@@ -832,7 +835,10 @@ def section_acces():
 
     if len(st.session_state.facade_acces_parking) > 0:
         for img in st.session_state["facade_acces_parking"]:
-            st.image(img, width=200)
+            img.seek(0)
+            if img.read():  # ✅ si le fichier n'est pas vide
+                img.seek(0)  # 🔥 remets le curseur au début pour afficher
+                st.image(img, width=200)
             st.write("")
             st.write("")
 
@@ -870,7 +876,10 @@ def section_images():
 
     if len(st.session_state.etats_avant_travaux.get("Arrivée réseau", [])) > 0:
         for img in st.session_state.etats_avant_travaux["Arrivée réseau"]:
-            st.image(img, width=200)
+            img.seek(0)
+            if img.read():  # ✅ si le fichier n'est pas vide
+                img.seek(0)  # 🔥 remets le curseur au début pour afficher
+                st.image(img, width=200)
             st.write("")
             st.write("")
 
@@ -894,9 +903,12 @@ def section_images():
 
         if len(st.session_state.etats_avant_travaux.get(niveau_label, [])) > 0:
             for img in st.session_state.etats_avant_travaux[niveau_label]:
-                st.image(img, width=200)
-                st.write("")
-                st.write("")
+                img.seek(0)
+                if img.read():  # ✅ si le fichier n'est pas vide
+                    img.seek(0)  # 🔥 remets le curseur au début pour afficher
+                    st.image(img, width=200)
+                    st.write("")
+                    st.write("")
 
     st.write("")
     st.write("")
@@ -919,9 +931,12 @@ def section_images():
 
     if len(st.session_state.plan_reseau2) > 0:
         for img in st.session_state["plan_reseau2"]:
-            st.image(img, width=200)
-            st.write("")
-            st.write("")
+            img.seek(0)
+            if img.read():  # ✅ si le fichier n'est pas vide
+                img.seek(0)  # 🔥 remets le curseur au début pour afficher
+                st.image(img, width=200)
+                st.write("")
+                st.write("")
 
     render_image_section("Paramètres généraux")
     render_image_section("Arrivée réseau et pied de colonne")
@@ -1275,7 +1290,10 @@ def render_image_section(name_bigsection: str):
                     st.experimental_rerun()
 
                 for img in st.session_state.sections_dict[name_bigsection][sub]:
-                    st.image(img, caption="", width=200)
+                    img.seek(0)
+                    if img.read():  # ✅ si le fichier n'est pas vide
+                        img.seek(0)  # 🔥 remets le curseur au début pour afficher
+                        st.image(img, width=200)
 
 
 def generation_pdf():
