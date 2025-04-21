@@ -690,9 +690,12 @@ def section_technique():
 
     if len(st.session_state.plan_reseau) > 0:
         for img in st.session_state["plan_reseau"]:
-            st.image(img, width=200)
-            st.write("")
-            st.write("")
+            img.seek(0)
+            if img.read():  # ✅ si le fichier n'est pas vide
+                img.seek(0)  # 🔥 remets le curseur au début pour afficher
+                st.image(img, width=200)
+            else:
+                st.warning("⚠️ Image vide détectée, elle sera ignorée.")
 
     st.write("")
     st.write("")
