@@ -674,7 +674,10 @@ def process_pdf(pdf_file):
 
 
 def process_excel(excel_file):
-    xlsx_data = pd.read_excel(excel_file, sheet_name=None)
+    excel_file.seek(0)  # très important pour BytesIO !
+    xlsx_data = pd.read_excel(excel_file, sheet_name=None, engine="openpyxl")
+
+    # xlsx_data = pd.read_excel(excel_file, sheet_name=None)
     xlsx_html = (
         """<hr style="border: none; height: 1px; background-color: #995b9f; ">"""
     )
