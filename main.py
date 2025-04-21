@@ -258,20 +258,26 @@ def load_state_from_supabase(project_name):
         from io import BytesIO
 
         def decode_files(encoded_files):
-            return (
-                [BytesIO(base64.b64decode(img)) for img in encoded_files]
-                if encoded_files
-                else []
-            )
+            if not encoded_files:
+                return []
+            result = []
+            for img in encoded_files:
+                file = BytesIO(base64.b64decode(img))
+                file.seek(0)  # 🔥 remet le curseur au début
+                result.append(file)
+            return result
 
         def decode_files_dict(encoded_dict):
-            from io import BytesIO
-
+            if not encoded_dict:
+                return {}
             decoded = {}
             for key, encoded_list in encoded_dict.items():
-                decoded[key] = [
-                    BytesIO(base64.b64decode(file)) for file in encoded_list
-                ]
+                decoded_list = []
+                for file_encoded in encoded_list:
+                    file = BytesIO(base64.b64decode(file_encoded))
+                    file.seek(0)  # 🔥 remet le curseur au début
+                    decoded_list.append(file)
+                decoded[key] = decoded_list
             return decoded
 
         loaded_state["plan_reseau"] = decode_files(loaded_state.get("plan_reseau"))
